@@ -5,6 +5,8 @@ const express = require('express')
 const fileUpload = require('express-fileupload')
 const cors = require('cors')
 const connectDB = require('./config/db')
+const user = require('./routes/userRoutes')
+const { errorHandler, notFound } = require('./middlewares/errorHandler')
 const app = express()
 
 
@@ -26,13 +28,13 @@ app.use(fileUpload())
 
 //routes
 
-app.get('/', (req, res)=>{
-    res.send('Server Runinng')
-})
+app.use('/api/v1/users', user)
 
 
 //error middlewares
 
+app.use(notFound)
+app.use(errorHandler)
 
 app.listen(process.env.PORT, (req, res)=>{
     console.log('Server up and running')
