@@ -30,12 +30,12 @@ exports.signup = asyncHandler(async (req, res) => {
     password,
     name,
     profile_img: {
-        id: 'imageId',
-        url: 'image.url'
-    }
+      id: "imageId",
+      url: "image.url",
+    },
   });
 
-  const createdUser = await newUser.save()
+  const createdUser = await newUser.save();
 
   if (createdUser) {
     generateToken(201, createdUser, res);
@@ -64,5 +64,28 @@ exports.getUserProfile = asyncHandler(async (req, res) => {
   res.status(200).json({
     success: true,
     user,
+  });
+});
+
+exports.updateUserProfile = asyncHandler(async (req, res) => {
+  const { email, name, password, status } = req.body;
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    res.status(404);
+    throw new Error("");
+  }
+
+  if (name) user.name = name;
+  if (email) user.email = email;
+  if (status) user.status = status;
+  if (password) user.password = password;
+
+  const updatedUser = await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Profile Updated",
+    updatedUser,
   });
 });
