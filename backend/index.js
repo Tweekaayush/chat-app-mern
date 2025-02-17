@@ -6,6 +6,7 @@ const fileUpload = require('express-fileupload')
 const cors = require('cors')
 const connectDB = require('./config/db')
 const user = require('./routes/userRoutes')
+const chat = require('./routes/chatRoutes')
 const { errorHandler, notFound } = require('./middlewares/errorHandler')
 const app = express()
 
@@ -29,6 +30,7 @@ app.use(fileUpload())
 //routes
 
 app.use('/api/v1/users', user)
+app.use('/api/v1/chats',chat)
 
 
 //error middlewares
