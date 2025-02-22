@@ -90,24 +90,34 @@ exports.updateUserProfile = asyncHandler(async (req, res) => {
   });
 });
 
-
-exports.getUsers = asyncHandler(async(req, res)=>{
-  const keyword = req.query.search ? {
-    $or: [
-      {
-        name: {$regex: req.query.search, $options: 'i'}
-      },
-      {
-        email: {$regex: req.query.search, $options: 'i'}
+exports.getUsers = asyncHandler(async (req, res) => {
+  const keyword = req.query.search
+    ? {
+        _id: {
+          $ne: req.user._id,
+        },
+        $or: [
+          {
+            name: { $regex: req.query.search, $options: "i" },
+          },
+          {
+            email: { $regex: req.query.search, $options: "i" },
+          },
+        ],
       }
-    ]
-  }: {}
+    : {};
 
-  const users  = await User.find(keyword).find({_id: {$ne: req.user._id}})
+  if (!req.query.search) {
+    res.status(200).json({
+      success: true,
+      users: [],
+    });
+  } else {
+    const users = await User.find(keyword).limit(6);
 
-  res.status(200).json({
-    success: true,
-    users
-  })
-
-})
+    res.status(200).json({
+      success: true,
+      users,
+    });
+  }
+});

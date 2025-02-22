@@ -126,7 +126,7 @@ const userSlice = createSlice({
     });
     builder.addCase(logout.fulfilled, (state, action) => {
       state.loading = false;
-      state.data = action.payload.user;
+      state.data = {}
       state.successMessage = action.payload.message;
     });
     builder.addCase(logout.rejected, (state, action) => {

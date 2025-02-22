@@ -1,53 +1,76 @@
-import React, { useEffect } from 'react'
-import './App.css'
-import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom'
-import Login from './pages/Login'
-import SignUp from './pages/SignUp'
-import PrivateRoutes from './components/PrivateRoutes'
-import Chats from './pages/Chats'
-import Navbar from './components/Layout/Navbar'
-import Footer from './components/Layout/Footer'
-import {toast, ToastContainer} from 'react-toastify'
-import { useDispatch, useSelector } from 'react-redux'
-import { clearUserErrors, clearUserSuccessMessage, loadUser } from './slices/userSlice'
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
+import PrivateRoutes from "./components/PrivateRoutes";
+import Chats from "./pages/Chats";
+import Navbar from "./components/Layout/Navbar";
+import Footer from "./components/Layout/Footer";
+import { toast, ToastContainer } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  clearUserErrors,
+  clearUserSuccessMessage,
+  loadUser,
+} from "./slices/userSlice";
+import CreateGroupChat from "./components/CreateGroupChat";
+import SearchUserChat from "./components/SearchUserChat";
 
 const App = () => {
+  const { successMessage: userSuccessMessage, error: userError } = useSelector(
+    (state) => state.user
+  );
+  const dispatch = useDispatch();
+  const [chatOpen, setChatOpen] = useState(false);
+  const [groupOpen, setGroupOpen] = useState(false);
 
-  const {successMessage: userSuccessMessage, error:userError} = useSelector(state=>state.user)
-  const dispatch = useDispatch()
-  useEffect(()=>{
-    if(userError){
-      toast.error(userError)
-      dispatch(clearUserErrors())
+  useEffect(() => {
+    if (userError) {
+      toast.error(userError);
+      dispatch(clearUserErrors());
     }
-  },[userError])
+  }, [userError]);
 
-  useEffect(()=>{
-    if(userSuccessMessage){
-      toast.success(userSuccessMessage)
-      dispatch(clearUserSuccessMessage())
+  useEffect(() => {
+    if (userSuccessMessage) {
+      toast.success(userSuccessMessage);
+      dispatch(clearUserSuccessMessage());
     }
-  },[userSuccessMessage])
+  }, [userSuccessMessage]);
 
-  useEffect(()=>{
-    dispatch(loadUser())
-  }, [])
+  useEffect(() => {
+    dispatch(loadUser());
+  }, []);
 
   return (
-   <Router>
-    <Navbar/>
-    <Routes>
-      <Route exact path='/' element={<Navigate to='/chats' replace/>}/>
-      <Route exact path='/login' element={<Login/>}/>
-      <Route exact path='/signup' element={<SignUp/>}/>
-      <Route element={<PrivateRoutes/>}>
-        <Route exact path='/chats' element={<Chats/>}/>
-      </Route>
-    </Routes>
-    <Footer/>
-    <ToastContainer/>
-   </Router> 
-  )
-}
+    <Router>
+      <Navbar />
+      <SearchUserChat setChatOpen={setChatOpen} chatOpen={chatOpen} />
+      <CreateGroupChat setGroupOpen={setGroupOpen} groupOpen={groupOpen} />
+      <Routes>
+        <Route exact path="/" element={<Navigate to="/chats" replace />} />
+        <Route exact path="/login" element={<Login />} />
+        <Route exact path="/signup" element={<SignUp />} />
+        <Route element={<PrivateRoutes />}>
+          <Route
+            exact
+            path="/chats"
+            element={
+              <Chats setChatOpen={setChatOpen} setGroupOpen={setGroupOpen} />
+            }
+          />
+        </Route>
+      </Routes>
+      <Footer />
+      <ToastContainer />
+    </Router>
+  );
+};
 
-export default App
+export default App;

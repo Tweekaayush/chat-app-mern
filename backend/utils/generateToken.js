@@ -17,6 +17,7 @@ exports.generateToken = async (statusCode, user, res) => {
 
   res.cookie("token", token, options).status(statusCode).json({
     success: true,
-    user: {...user._doc, password: undefined}
+    user: {...user._doc, password: undefined},
+    message: 'Logged In'
   });
 };
