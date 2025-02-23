@@ -1,14 +1,19 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
-import { IoIosPeople, IoIosSearch } from "react-icons/io";
+import { IoIosCloseCircleOutline, IoIosPeople, IoIosSearch } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllUsers } from "../slices/chatSlice";
+import { createGroupChat, getAllUsers } from "../slices/chatSlice";
 
 const CreateGroupChat = ({ groupOpen, setGroupOpen }) => {
   const [formData, setFormData] = useState({
     name: "",
     members: [],
   });
+  const [formErrors, setFormErrors] = useState({
+    name: "",
+    members: "",
+  });
+
   const [search, setSearch] = useState("");
   const {
     loading,
@@ -28,6 +33,33 @@ const CreateGroupChat = ({ groupOpen, setGroupOpen }) => {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (validate()) {
+      dispatch(createGroupChat({ name: formData.name, users: [...formData.members, data] }))
+    }
+  };
+
+  const validate = () => {
+    const err = {
+      name: "",
+      members: "",
+    };
+
+    if (!formData.name) {
+      err.name = "Please enter a group name";
+    }
+
+    if (formData.members.length === 0) {
+      err.members = "Must contain 2 or more members";
+    }
+
+    setFormErrors({ ...err });
+
+    return !err.name && !err.members;
+  };
+
   useEffect(() => {
     const timeout = setTimeout(searchUsers, 1000);
     return () => clearTimeout(timeout);
@@ -38,10 +70,6 @@ const CreateGroupChat = ({ groupOpen, setGroupOpen }) => {
     return () => window.removeEventListener("click", handleClickOutside, true);
   }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log({...formData, members: [...formData.members, data]});
-  };
   return (
     <div
       className="create-chat-overlay"
@@ -66,6 +94,7 @@ const CreateGroupChat = ({ groupOpen, setGroupOpen }) => {
                 placeholder="Group Name"
               />
             </div>
+            {formErrors.name && <p className="error-msg">{formErrors.name}</p>}
           </label>
           <label className="form-label">
             <h6>Members:</h6>
@@ -80,7 +109,18 @@ const CreateGroupChat = ({ groupOpen, setGroupOpen }) => {
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
+            {formErrors.members && (
+              <p className="error-msg">{formErrors.members}</p>
+            )}
           </label>
+            {formData.members.length !== 0  && <ul className="create-group-member-list">
+              {formData.members.map((member)=>{
+                return <li className="create-group-member">
+                  <h6>{member.name}</h6>
+                  <IoIosCloseCircleOutline/>
+                </li>
+              })}
+            </ul>}
           <ul className="user-list">
             {userList
               ?.filter(

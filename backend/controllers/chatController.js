@@ -55,6 +55,7 @@ exports.fetchChats = asyncHandler(async (req, res) => {
   })
     .populate("users", "-password")
     .populate("groupAdmin", "-password")
+    .populate('latestMessage')
     .sort({ updatedAt: -1 });
 
   res.status(200).json({
@@ -66,11 +67,9 @@ exports.fetchChats = asyncHandler(async (req, res) => {
 exports.createGroupChat = asyncHandler(async (req, res) => {
   const { name, users } = req.body;
 
-  const allUsers = JSON.parse(users);
-
   const groupChat = await Chat.create({
     chatName: name,
-    users: allUsers,
+    users: users,
     isGroupChat: true,
     groupAdmin: req.user._id,
   });

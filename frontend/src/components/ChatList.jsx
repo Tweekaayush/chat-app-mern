@@ -1,35 +1,41 @@
 import React from "react";
 import { getSender, getSenderImage } from "../utils/utils";
+import { useDispatch } from "react-redux";
+import { setActiveChat } from "../slices/chatSlice";
 
 const ChatList = ({ chatList, loggedInUser }) => {
+  const dispatch = useDispatch();
   return (
-    <div className="chat-list-container">
-      <ul className="chat-list">
-        {chatList?.map((chat) => {
-          return (
-            <li className="chat-list-item" key={chat._id}>
-              <div className="chat-list-item-image">
-                <img
-                  src={
-                    chat.isGroupChat
-                      ? chat?.profile_img?.url
-                      : getSenderImage(loggedInUser, chat?.users)
-                  }
-                  alt={chat?.chatName}
-                />
-              </div>
-              <div className="chat-list-item-info">
-                <h3>
-                  {chat?.isGroupChat
-                    ? chat?.chatName
-                    : getSender(loggedInUser, chat.users)}
-                </h3>
-              </div>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
+    <ul className="chat-list">
+      {chatList?.map((chat) => {
+        return (
+          <li
+            className="chat-list-item"
+            key={chat._id}
+            onClick={() => dispatch(setActiveChat(chat))}
+          >
+            <div className="profile-img">
+              <img
+                src={
+                  chat.isGroupChat
+                    ? chat?.profile_img?.url
+                    : getSenderImage(loggedInUser, chat?.users)
+                }
+                alt={chat?.chatName}
+              />
+            </div>
+            <div className="chat-list-item-info">
+              <h3>
+                {chat?.isGroupChat
+                  ? chat?.chatName
+                  : getSender(loggedInUser, chat.users)}
+              </h3>
+              <p className="latest-message">{chat?.latestMessage?.content}</p>
+            </div>
+          </li>
+        );
+      })}
+    </ul>
   );
 };
 

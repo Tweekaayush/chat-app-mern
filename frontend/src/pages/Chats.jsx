@@ -5,8 +5,9 @@ import { fetchChatList } from "../slices/chatSlice";
 import ChatList from "../components/ChatList";
 import { IoAdd } from "react-icons/io5";
 import { IoIosPeople } from "react-icons/io";
+import ChatBox from "../components/ChatBox";
 
-const Chats = ({setChatOpen, setGroupOpen}) => {
+const Chats = ({ setChatOpen, setGroupOpen }) => {
   const {
     loading,
     data: { chatList },
@@ -16,14 +17,14 @@ const Chats = ({setChatOpen, setGroupOpen}) => {
   } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
-  const [filteredChatList, setFIlteredChatList] = useState([]);
+  const [filteredChatList, setFilteredChatList] = useState([]);
 
   useEffect(() => {
     dispatch(fetchChatList());
   }, []);
 
   useEffect(() => {
-    setFIlteredChatList(chatList);
+    setFilteredChatList(chatList);
   }, [chatList]);
 
   return (
@@ -33,20 +34,20 @@ const Chats = ({setChatOpen, setGroupOpen}) => {
           <FilterUsers
             chatList={chatList}
             filteredChatList={filteredChatList}
-            setFilteredChatList={setFIlteredChatList}
+            setFilteredChatList={setFilteredChatList}
             loggedInUser={_id}
           />
           <ChatList chatList={filteredChatList} loggedInUser={_id} />
           <div className="create-chats">
-            <button onClick={()=>setChatOpen(true)}>
+            <button onClick={() => setChatOpen(true)}>
               <IoAdd />
             </button>
-            <button onClick={()=>setGroupOpen(true)}>
+            <button onClick={() => setGroupOpen(true)}>
               <IoIosPeople />
             </button>
           </div>
         </div>
-        <div className="chats-container-right">f</div>
+        <ChatBox />
       </div>
     </div>
   );

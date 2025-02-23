@@ -5,3 +5,7 @@ export const getSender = (loggedInUser, users) =>{
 export const getSenderImage = (loggedInUser, users)=>{
     return loggedInUser === users[0]._id?users[1]?.profile_img?.url:users[1]?.profile_img?.url
 }
+
+export const getSenderStatus = (loggedInUser, users) =>{
+    return loggedInUser === users[0]._id? users[1].status:users[0].status   
+}
