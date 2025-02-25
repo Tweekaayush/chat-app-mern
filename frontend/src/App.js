@@ -21,6 +21,7 @@ import {
 } from "./slices/userSlice";
 import CreateGroupChat from "./components/CreateGroupChat";
 import SearchUserChat from "./components/SearchUserChat";
+import AddToGroup from "./components/AddToGroup";
 
 const App = () => {
   const { successMessage: userSuccessMessage, error: userError } = useSelector(
@@ -29,6 +30,7 @@ const App = () => {
   const dispatch = useDispatch();
   const [chatOpen, setChatOpen] = useState(false);
   const [groupOpen, setGroupOpen] = useState(false);
+  const [openAddParticipants, setOpenAddParticipants] = useState(false);
 
   useEffect(() => {
     if (userError) {
@@ -53,6 +55,10 @@ const App = () => {
       <Navbar />
       <SearchUserChat setChatOpen={setChatOpen} chatOpen={chatOpen} />
       <CreateGroupChat setGroupOpen={setGroupOpen} groupOpen={groupOpen} />
+      <AddToGroup
+        setOpenAddParticipants={setOpenAddParticipants}
+        openAddParticipants={openAddParticipants}
+      />
       <Routes>
         <Route exact path="/" element={<Navigate to="/chats" replace />} />
         <Route exact path="/login" element={<Login />} />
@@ -62,7 +68,11 @@ const App = () => {
             exact
             path="/chats"
             element={
-              <Chats setChatOpen={setChatOpen} setGroupOpen={setGroupOpen} />
+              <Chats
+                setChatOpen={setChatOpen}
+                setGroupOpen={setGroupOpen}
+                setOpenAddParticipants={setOpenAddParticipants}
+              />
             }
           />
         </Route>

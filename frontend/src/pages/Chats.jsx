@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from "react";
 import FilterUsers from "../components/FilterChatList";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchChatList } from "../slices/chatSlice";
+import {
+  fetchChatList,
+  setOnlineUsers,
+  setSocketConnection,
+} from "../slices/chatSlice";
 import ChatList from "../components/ChatList";
 import { IoAdd } from "react-icons/io5";
 import { IoIosPeople } from "react-icons/io";
 import ChatBox from "../components/ChatBox";
+import io from "socket.io-client";
 
-const Chats = ({ setChatOpen, setGroupOpen }) => {
+const Chats = ({ setChatOpen, setGroupOpen, setOpenAddParticipants }) => {
   const {
     loading,
     data: { chatList },
   } = useSelector((state) => state.chats);
   const {
     data: { _id },
+    data: user,
   } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
@@ -21,6 +27,23 @@ const Chats = ({ setChatOpen, setGroupOpen }) => {
 
   useEffect(() => {
     dispatch(fetchChatList());
+
+    const socket = io(process.env.REACT_APP_SERVER_URL);
+
+    socket.emit("setup", user);
+
+    socket.on("connected", () => {
+      dispatch(setSocketConnection(socket));
+    });
+
+    socket.on("online user", (data) => {
+      dispatch(setOnlineUsers(data));
+      console.log(data);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   useEffect(() => {
@@ -47,7 +70,7 @@ const Chats = ({ setChatOpen, setGroupOpen }) => {
             </button>
           </div>
         </div>
-        <ChatBox />
+        <ChatBox setOpenAddParticipants={setOpenAddParticipants} />
       </div>
     </div>
   );

@@ -132,6 +132,7 @@ exports.addToGroup = asyncHandler(async (req, res) => {
 
 exports.removeFromGroup = asyncHandler(async (req, res) => {
   const { userId, groupId } = req.body;
+  console.log(userId, groupId)
   const groupChat = await Chat.findByIdAndUpdate(
     groupId,
     {

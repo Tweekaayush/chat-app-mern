@@ -130,7 +130,7 @@ const CreateGroupChat = ({ groupOpen, setGroupOpen }) => {
               .map((user) => {
                 return (
                   <li key={user._id} className="user-list-item">
-                    <div className="user-list-item-image">
+                    <div className="profile-img">
                       <img src={user?.profile_img?.url} alt={user?.name} />
                     </div>
                     <h1>{user?.name}</h1>

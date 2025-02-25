@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { IoIosSearch, IoIosCloseCircleOutline } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllUsers } from "../slices/chatSlice";
+import { addToGroup, getAllUsers } from "../slices/chatSlice";
 import { IoClose } from "react-icons/io5";
 
-const SearchUserChat = ({chatOpen, setChatOpen}) => {
+const AddToGroup = ({openAddParticipants, setOpenAddParticipants}) => {
   const [search, setSearch] = useState("");
   const {
     loading,
-    data: { userList },
+    data: { userList, activeChat },
   } = useSelector((state) => state.chats);
   const ref = useRef(null);
   const dispatch = useDispatch();
@@ -19,7 +19,7 @@ const SearchUserChat = ({chatOpen, setChatOpen}) => {
 
   const handleClickOutside = (e) =>{
     if(ref.current && !ref.current.contains(e.target)){
-        setChatOpen(false)
+        setOpenAddParticipants(false)
     }
   }
 
@@ -34,10 +34,10 @@ const SearchUserChat = ({chatOpen, setChatOpen}) => {
   }, []);
 
   return (
-    <div className="create-chat-overlay" style={{display: chatOpen?'':'none'}}>
+    <div className="create-chat-overlay" style={{display: openAddParticipants?'':'none'}}>
       <div className="create-chat-dialog" ref={ref}>
-        <IoClose className="close-button" onClick={()=>setChatOpen(false)}/>
-        <h1>Find a fellow chatter!</h1>
+        <IoClose className="close-button" onClick={()=>setOpenAddParticipants(false)}/>
+        <h1>Add Participants</h1>
         <div>
           <label className="search-user-input">
             <IoIosSearch />
@@ -62,7 +62,7 @@ const SearchUserChat = ({chatOpen, setChatOpen}) => {
                   <img src={user?.profile_img?.url} alt={user?.name} />
                 </div>
                 <h1>{user?.name}</h1>
-                <button>Add</button>
+                <button onClick={()=>[dispatch(addToGroup({userId: user?._id, groupId: activeChat?._id})), setOpenAddParticipants(false)]}>Add</button>
               </li>
             );
           })}
@@ -72,4 +72,4 @@ const SearchUserChat = ({chatOpen, setChatOpen}) => {
   );
 };
 
-export default SearchUserChat;
+export default AddToGroup;

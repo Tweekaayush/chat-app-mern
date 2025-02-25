@@ -7,6 +7,9 @@ const initialState = {
     chatList: [],
     activeChat: {},
     activeChatMessages: [],
+    onlineUsers: [],
+    socketConnection: null,
+    notifications: [],
   },
   error: "",
 };
@@ -70,9 +73,8 @@ export const createGroupChat = createAsyncThunk(
 
 export const fetchMessages = createAsyncThunk(
   "fetchMessages",
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, getState }) => {
     try {
-      console.log(payload)
       const res = await axios.get(
         `${process.env.REACT_APP_SERVER_URL}/api/v1/messages/${payload}`,
         {
@@ -89,8 +91,11 @@ export const fetchMessages = createAsyncThunk(
 
 export const setActiveChat = createAsyncThunk(
   "setActiveChat",
-  async (payload, { dispatch, rejectWithValue }) => {
+  async (payload, { dispatch, rejectWithValue, getState }) => {
     try {
+      const socket = getState().chats.data.socketConnection;
+
+      socket.emit("join chat", payload._id);
       dispatch(fetchMessages(payload._id));
       return payload;
     } catch (error) {
@@ -101,7 +106,7 @@ export const setActiveChat = createAsyncThunk(
 
 export const sendMessage = createAsyncThunk(
   "sendMessage",
-  async (payload, { rejectWithValue, dispatch }) => {
+  async (payload, { rejectWithValue, dispatch, getState }) => {
     try {
       const res = await axios.post(
         `${process.env.REACT_APP_SERVER_URL}/api/v1/messages`,
@@ -111,6 +116,10 @@ export const sendMessage = createAsyncThunk(
         }
       );
 
+      const socket = getState().chats.data.socketConnection;
+
+      socket.emit("new message", res.data.newMessage);
+      dispatch(appendMessage(res.data.newMessage));
       return res.data;
     } catch (error) {
       return rejectWithValue(error.response.data.message);
@@ -118,10 +127,57 @@ export const sendMessage = createAsyncThunk(
   }
 );
 
+
+export const removeFromGroup = createAsyncThunk('removeFromGroup', async(payload, {dispatch, rejectWithValue,})=>{
+  try {
+    const res = await axios.put(`${process.env.REACT_APP_SERVER_URL}/api/v1/chats/group/remove`, payload, {
+      withCredentials: true
+    })
+    dispatch(fetchChatList())
+    return res.data
+  } catch (error) {
+    return rejectWithValue(error.response.data.message);
+  }
+})
+
+export const addToGroup = createAsyncThunk('addToGroup', async(payload, {dispatch, rejectWithValue,})=>{
+  try {
+    const res = await axios.put(`${process.env.REACT_APP_SERVER_URL}/api/v1/chats/group/add`, payload, {
+      withCredentials: true
+    })
+    return res.data
+  } catch (error) {
+    return rejectWithValue(error.response.data.message);
+  }
+})
+
 const chatSlice = createSlice({
   name: "chats",
   initialState,
-  reducers: {},
+  reducers: {
+    clearActiveChat: (state, action) => {
+      state.data.activeChat = {};
+      state.data.activeChatMessages = [];
+    },
+    setSocketConnection: (state, action) => {
+      state.data.socketConnection = action.payload;
+    },
+    clearSocketConnection: (state, action) => {
+      state.data.socketConnection = null;
+    },
+    appendMessage: (state, action) => {
+      state.data.activeChatMessages = [
+        ...state.data.activeChatMessages,
+        action.payload,
+      ];
+    },
+    updateNotifications: (state, action) => {
+      state.data.notifications = action.payload;
+    },
+    setOnlineUsers: (state, action)=>{
+      state.data.onlineUsers = action.payload
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchChatList.pending, (state, action) => {
       state.loading = true;
@@ -182,15 +238,44 @@ const chatSlice = createSlice({
     });
     builder.addCase(setActiveChat.fulfilled, (state, action) => {
       state.loading = false;
-      state.data.activeChat = action.payload
+      state.data.activeChat = action.payload;
     });
     builder.addCase(setActiveChat.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(removeFromGroup.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(removeFromGroup.fulfilled, (state, action) => {
+      state.loading = false;
+      state.data.activeChat = action.payload.groupChat;
+    });
+    builder.addCase(removeFromGroup.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(addToGroup.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(addToGroup.fulfilled, (state, action) => {
+      state.loading = false;
+      state.data.activeChat = action.payload.groupChat;
+    });
+    builder.addCase(addToGroup.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload;
     });
   },
 });
 
-export const {} = chatSlice.actions;
+export const {
+  clearActiveChat,
+  setSocketConnection,
+  clearSocketConnection,
+  appendMessage,
+  updateNotifications,
+  setOnlineUsers
+} = chatSlice.actions;
 
 export default chatSlice.reducer;
