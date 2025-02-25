@@ -96,7 +96,6 @@ export const setActiveChat = createAsyncThunk(
       const socket = getState().chats.data.socketConnection;
 
       socket.emit("join chat", payload._id);
-      dispatch(fetchMessages(payload._id));
       return payload;
     } catch (error) {
       return rejectWithValue(error.response.data.message);
@@ -151,6 +150,19 @@ export const addToGroup = createAsyncThunk('addToGroup', async(payload, {dispatc
   }
 })
 
+
+export const createChat = createAsyncThunk('createChat', async(payload, {rejectWithValue, dispatch})=>{
+  try {
+    const res = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/v1/chats`, payload, {
+      withCredentials: true
+    })
+    dispatch(fetchChatList())
+    return res.data
+  } catch (error) {
+    return rejectWithValue(error.response.data.message);
+  }
+})
+
 const chatSlice = createSlice({
   name: "chats",
   initialState,
@@ -176,6 +188,16 @@ const chatSlice = createSlice({
     },
     setOnlineUsers: (state, action)=>{
       state.data.onlineUsers = action.payload
+    },
+    clearChatData: (state)=>{
+      state.data = {
+        chatList: [],
+        activeChat: {},
+        activeChatMessages: [],
+        onlineUsers: [],
+        socketConnection: null,
+        notifications: [],
+      }
     }
   },
   extraReducers: (builder) => {
@@ -266,6 +288,17 @@ const chatSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     });
+    builder.addCase(createChat.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(createChat.fulfilled, (state, action) => {
+      state.loading = false;
+      state.data.activeChat = action.payload.chat;
+    });
+    builder.addCase(createChat.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    });
   },
 });
 
@@ -275,7 +308,8 @@ export const {
   clearSocketConnection,
   appendMessage,
   updateNotifications,
-  setOnlineUsers
+  setOnlineUsers,
+  clearChatData
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

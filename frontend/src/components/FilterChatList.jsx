@@ -36,7 +36,7 @@ const FilterChatList = ({
           value={search}
           onChange={handleChange}
         />
-        {search && <IoIosCloseCircleOutline/>}
+        {search && <IoIosCloseCircleOutline onClick={()=>[setSearch(''), setFilteredChatList(chatList)]}/>}
       </label>
     </div>
   );

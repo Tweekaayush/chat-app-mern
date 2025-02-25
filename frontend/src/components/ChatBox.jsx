@@ -68,6 +68,7 @@ const ChatBox = ({setOpenAddParticipants}) => {
   useEffect(() => {
     setSelectedChatCompare(activeChat);
     setActiveChatPage(0);
+    dispatch(fetchMessages(activeChat._id))
   }, [activeChat?._id]);
 
   useEffect(() => {

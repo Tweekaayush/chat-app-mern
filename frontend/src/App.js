@@ -22,6 +22,7 @@ import {
 import CreateGroupChat from "./components/CreateGroupChat";
 import SearchUserChat from "./components/SearchUserChat";
 import AddToGroup from "./components/AddToGroup";
+import Profile from "./pages/Profile";
 
 const App = () => {
   const { successMessage: userSuccessMessage, error: userError } = useSelector(
@@ -75,6 +76,7 @@ const App = () => {
               />
             }
           />
+          <Route exact path='/profile' element={<Profile/>}/>
         </Route>
       </Routes>
       <Footer />

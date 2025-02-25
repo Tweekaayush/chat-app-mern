@@ -7,20 +7,21 @@
 }
 
 :root {
-  --main: rgb(84, 21, 143);
-  --bg-color-1: #1f1f22;
-  --bg-color-2: #1a1a1e;
-  --bg-color-3: #26272d;
+  --main: #1d90f4;
+  --bg-color-1: #282a37;
+  --bg-color-2: #323645;
+  --bg-color-3: #424657;
+  --bg-color-4: #26272d;
   --text-color-1: #ffffff;
-  --text-color-2: #f3f3f3;
-  --text-color-3: #bdbdbd;
+  --text-color-2: #bdbdbd;
+  --text-color-3: #adadad;
   --danger: rgb(219, 65, 65);
-  --info: rgb(88, 88, 233);
-  --success: rgb(21, 94, 21);
+  --success: rgb(68, 150, 68);
+  --shadow: rgba(17, 17, 17, 0.267);
 }
 
 body {
-  background-color: var(--bg-color-2);
+  background-color: var(--bg-color-1);
   font-family: "Nunito Sans", serif;
   width: 100%;
   height: 100vh;
@@ -48,6 +49,7 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: var(--bg-color-1);
 }
 
 .heading-1 {
@@ -73,6 +75,7 @@ button {
   justify-content: center;
   align-items: center;
   z-index: 999;
+  padding: 16px;
 }
 
 .button-1 {
@@ -92,7 +95,17 @@ button {
   overflow: hidden;
 }
 
-.profile-img > img {
+.profile-img-3 {
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
+  min-height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.profile-img > img,
+.profile-img-3 > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -107,7 +120,8 @@ nav {
   padding: 16px;
   align-items: center;
   z-index: 998;
-  background-color: var(--main);
+  background-color: var(--bg-color-1);
+  border-bottom: 1px solid var(--shadow);
 }
 
 .nav-brand {
@@ -116,34 +130,34 @@ nav {
   text-transform: capitalize;
 }
 
-.nav-items{
+.nav-items {
   display: flex;
   align-items: center;
   margin-left: auto;
   gap: 16px;
 }
 
-.nav-notifications{
+.nav-notifications {
   position: relative;
 }
 
-.notification-icon{
+.notification-icon {
   display: flex;
   align-items: center;
   cursor: pointer;
 }
 
-.notification-icon > svg{
+.notification-icon > svg {
   width: 24px;
   height: 24px;
   color: var(--text-color-1);
 }
 
-.notification-icon-active > svg{
+.notification-icon-active > svg {
   color: var(--main);
 }
 
-.notifications-list{
+.notifications-list {
   position: absolute;
   top: 32px;
   right: 0;
@@ -156,31 +170,32 @@ nav {
   overflow-y: auto;
 }
 
-.notifications-list > h6{
+.notifications-list > h6 {
   font-size: 14px;
   padding: 8px;
-  color:var(--text-color-2);
-  background-color: var(--bg-color-1);
-  border-radius: 4px 4px 0 0 ;
+  color: var(--text-color-1);
+  background-color: var(--bg-color-2);
+  border-radius: 4px 4px 0 0;
 }
 
-.empty-notification{
+.empty-notification {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
-  color: var(--text-color-3);
+  color: var(--text-color-2);
 }
 
-.notification{
+.notification {
   padding: 8px;
-  color: var(--text-color-3);
-  border-bottom: 1px solid var(--text-color-3);
+  color: var(--text-color-2);
+  border-bottom: 1px solid var(--text-color-2);
   cursor: pointer;
 }
 
 .nav-dial {
   position: relative;
+  z-index: inherit;
 }
 
 .nav-dial-head {
@@ -207,6 +222,7 @@ nav {
   visibility: hidden;
   padding-top: 16px;
   cursor: pointer;
+  z-index: 990;
 }
 
 .nav-options > li {
@@ -215,7 +231,7 @@ nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--bg-color-2);
+  background-color: var(--bg-color-1);
   border-radius: 50%;
 }
 
@@ -224,7 +240,7 @@ nav {
 }
 
 .nav-options > li > svg {
-  color: var(--text-color-2);
+  color: var(--text-color-1);
   font-size: 18px;
 }
 
@@ -251,13 +267,17 @@ nav {
 
 .create-chat-dialog > h1,
 .create-group-dialog > h1 {
-  color: var(--text-color-2);
+  color: var(--text-color-1);
   text-align: center;
   padding-inline: 16px;
 }
 
 .create-chat-dialog > div {
   padding-inline: 16px;
+}
+
+.search-user-input {
+  background-color: var(--bg-color-1) !important;
 }
 
 .user-list {
@@ -275,7 +295,7 @@ nav {
   align-items: center;
 }
 
-.user-list-item > .profile-img{
+.user-list-item > .profile-img {
   margin-right: 16px;
 }
 
@@ -289,7 +309,7 @@ nav {
 
 .user-list-item > h1 {
   font-size: 16px;
-  color: var(--text-color-2);
+  color: var(--text-color-1);
 }
 
 .user-list-item > button {
@@ -359,21 +379,21 @@ nav {
 
 .form-label > h6 {
   font-size: 14px;
-  color: var(--text-color-3);
+  color: var(--text-color-1);
   margin-bottom: 4px;
   text-transform: capitalize;
 }
 
 .form-label > div {
   width: 100%;
-  background-color: var(--bg-color-3);
+  background-color: var(--bg-color-1);
   padding: 10px;
   display: flex;
   align-items: center;
 }
 
 .form-label > div > svg {
-  color: var(--text-color-3);
+  color: var(--text-color-1);
   width: 24px;
   height: 24px;
   margin-right: 16px;
@@ -383,7 +403,7 @@ nav {
   font-size: 16px;
   background: none;
   border: none;
-  color: var(--text-color-2);
+  color: var(--text-color-1);
   outline: none;
 }
 
@@ -397,7 +417,11 @@ nav {
 .form-link {
   width: 100%;
   text-align: left;
-  color: var(--text-color-3);
+  color: var(--text-color-1);
+}
+
+.form-link > a {
+  color: var(--main);
 }
 
 .error-msg {
@@ -413,22 +437,24 @@ nav {
   grid-template-columns: 3fr 9fr;
   width: 100%;
   height: inherit;
+  position: relative;
 }
 
 .chats-container-left {
   height: inherit;
   display: flex;
   flex-direction: column;
-  background-color: var(--bg-color-2);
+  z-index: 50;
 }
 
 .filter-user-input {
   padding: 16px;
+  margin-bottom: 3px;
 }
 
 .filter-user-input > label,
 .create-chat-dialog > div > label {
-  background-color: var(--bg-color-3);
+  background-color: var(--bg-color-2);
   display: flex;
   align-items: center;
   width: 100%;
@@ -437,7 +463,7 @@ nav {
 
 .filter-user-input > label > svg,
 .create-chat-dialog > div > label > svg {
-  color: var(--text-color-3);
+  color: var(--text-color-1);
   width: 20px;
   height: 20px;
   margin: 8px;
@@ -449,14 +475,14 @@ nav {
   border: none;
   outline: none;
   width: 100%;
-  color: var(--text-color-2);
+  color: var(--text-color-1);
   font-size: 16px;
   padding-block: 12px;
 }
 
 .filter-user-input > label > input::placeholder,
 .create-chat-dialog > div > label > input::placeholder {
-  color: var(--text-color-3);
+  color: var(--text-color-2);
 }
 
 .chat-list {
@@ -473,14 +499,15 @@ nav {
   padding: 16px;
   border-bottom: 1px solid var(--bg-color-3);
   gap: 8px;
+  height: 78px;
 }
 
 .chat-list-item:hover {
-  background-color: var(--bg-color-3);
+  background-color: var(--bg-color-2);
 }
 
 .chat-list-item-info > h3 {
-  color: var(--text-color-2);
+  color: var(--text-color-1);
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
@@ -517,7 +544,7 @@ nav {
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 14px;
-  color: var(--text-color-3);
+  color: var(--text-color-2);
 }
 
 /*----------------------- Chat Box ----------------------- */
@@ -527,35 +554,39 @@ nav {
   flex-direction: column;
   width: 100%;
   height: inherit;
+  background-color: var(--bg-color-1);
 }
 
 .chat-box-header {
   display: flex;
-  border-bottom: 1px solid var(--bg-color-3);
   padding: 16px;
   align-items: center;
 }
 
-.chat-box-header > div{
+.chat-box-header > div {
   display: flex;
   align-items: center;
   cursor: pointer;
 }
 
-.chat-box-header > span, .chat-details >span {
+.chat-box-header > span,
+.chat-details > span,
+.profile-head > span {
   display: flex;
   align-items: center;
 }
 
-.chat-box-header > span > svg, .chat-details >span>svg {
-  color: var(--text-color-2);
+.chat-box-header > span > svg,
+.chat-details > span > svg,
+.profile-head > span > svg {
+  color: var(--text-color-1);
   margin-right: 16px;
   width: 24px;
   height: 24px;
   cursor: pointer;
 }
 
-.chat-box-header > div > .profile-img{
+.chat-box-header > div > .profile-img {
   margin-right: 16px;
 }
 
@@ -566,13 +597,14 @@ nav {
 
 .chat-box-header-info > p {
   font-size: 16px;
-  color: var(--text-color-3);
+  color: var(--text-color-2);
 }
 
 .chat-box-messages {
   display: flex;
   height: 100%;
   overflow-y: auto;
+  background-color: var(--bg-color-2);
 }
 
 .message-list {
@@ -607,7 +639,7 @@ nav {
 }
 
 .message-sent-time {
-  color: var(--text-color-3);
+  color: var(--text-color-2);
   font-size: 12px;
   text-align: start;
   margin-top: 4px;
@@ -630,6 +662,7 @@ nav {
   display: flex;
   padding: 16px;
   gap: 16px;
+  background-color: var(--bg-color-2);
 }
 
 .chat-input > label {
@@ -663,27 +696,28 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: var(--bg-color-2);
 }
 
 .empty-chat-box > p {
   font-size: 16px;
-  color: var(--text-color-3);
+  color: var(--text-color-2);
   text-align: center;
 }
 
 /*----------------------- Chat Details ----------------------- */
 
-.chat-details{
+.chat-details {
   display: flex;
   flex-direction: column;
   height: inherit;
 }
 
-.chat-details > span{
+.chat-details > span {
   padding: 16px;
 }
 
-.chat-details-head{
+.chat-details-head {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -691,7 +725,7 @@ nav {
   border-bottom: 1px solid var(--bg-color-3);
 }
 
-.profile-img-2{
+.profile-img-2 {
   width: 70px;
   height: 70px;
   border-radius: 50%;
@@ -699,45 +733,45 @@ nav {
   margin-bottom: 16px;
 }
 
-.profile-img-2 > img{
+.profile-img-2 > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center center;
 }
 
-.chat-details-head > h1{
-  color:var(--text-color-2);
+.chat-details-head > h1 {
+  color: var(--text-color-1);
   font-size: 24px;
   margin-bottom: 10px;
 }
 
-.chat-details-head > p{
+.chat-details-head > p {
   font-size: 14px;
-  color:var(--text-color-3);
+  color: var(--text-color-2);
 }
 
-.chat-group-info{
+.chat-group-info {
   display: flex;
   flex-direction: column;
   height: 100%;
   overflow-y: auto;
 }
 
-.chat-group-info > h1{
+.chat-group-info > h1 {
   color: var(--text-color-1);
   padding: 16px;
   font-size: 18px;
 }
 
-.chat-details-buttons{
+.chat-details-buttons {
   display: flex;
   flex-direction: column;
   gap: 16px;
   padding: 16px;
 }
 
-.button-danger{
+.button-danger {
   background-color: var(--danger);
   color: var(--text-color-1);
   padding: 10px 16px;
@@ -745,7 +779,7 @@ nav {
   font-size: 18px;
 }
 
-.button-success{
+.button-success {
   background-color: var(--success);
   color: var(--text-color-1);
   padding: 10px 16px;
@@ -753,7 +787,7 @@ nav {
   font-size: 18px;
 }
 
-.group-member{
+.group-member {
   display: flex;
   align-items: center;
   padding: 16px;
@@ -761,46 +795,178 @@ nav {
   cursor: pointer;
 }
 
-.group-member > .profile-img{
+.group-member > .profile-img {
   margin-right: 16px;
 }
 
-.group-member > h2{
+.group-member > h2 {
   font-size: 16px;
   color: var(--text-color-2);
   margin-right: 16px;
 }
 
-.group-member > h4{
-  color:var(--info);
-  border: 1px solid var(--info);
+.group-member > h4 {
+  color: var(--main);
+  border: 1px solid var(--main);
   border-radius: 4px;
   font-size: 12px;
   padding: 4px 8px;
 }
 
-.group-member > svg{
+.group-member > svg {
   color: var(--danger);
   margin-left: auto;
   width: 18px;
   height: 18px;
 }
 
-/*----------------------- Footer ----------------------- */
+/*----------------------- profile ----------------------- */
+
+.profile-container {
+  display: grid;
+  grid-template-columns: 3fr 9fr;
+  width: 100%;
+  height: inherit;
+}
+
+.profile-left-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.profile-head {
+  display: grid;
+  grid-template-areas:
+    "a b c"
+    "a b d";
+  grid-template-columns: 1fr 1fr 10fr;
+  align-items: center;
+  padding: 16px;
+}
+
+.profile-head > span {
+  grid-area: a;
+}
+
+.profile-head > .profile-img-3 {
+  grid-area: b;
+  margin-right: 16px;
+}
+
+.profile-head > h1 {
+  grid-area: c;
+  font-size: 18px;
+  color: var(--text-color-1);
+}
+.profile-head > p {
+  grid-area: d;
+  font-size: 14px;
+  color: var(--text-color-2);
+}
+
+.profile-options-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-options-list > li {
+  color: var(--text-color-2);
+  text-align: center;
+  padding: 16px;
+  border-bottom: 1px solid var(--bg-color-1);
+  cursor: pointer;
+}
+
+.profile-option-active {
+  background-color: var(--bg-color-2);
+}
+
+.profile-options-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-options-container > h1 {
+  font-size: 24px;
+  color: var(--text-color-1);
+  padding: 16px;
+  margin-bottom: 18px;
+}
+
+.profile-options-container > form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  height: 100%;
+  background-color: var(--bg-color-2);
+}
+
+.profile-options-container > form > button {
+  background-color: var(--main);
+  color: var(--text-color-1);
+  padding: 10px 16px;
+  align-self: flex-end;
+}
+
+.theme-container {
+  height: 100%;
+  background-color: var(--bg-color-2);
+}
+
+/*----------------------- Footer  ----------------------- */
 
 footer {
   width: 100%;
   padding: 16px;
+  background-color: var(--bg-color-1);
 }
 
 footer > p {
   font-size: 14px;
   width: 100%;
   text-align: center;
-  color: var(--text-color-3);
+  color: var(--text-color-2);
 }
 
 footer > p > a {
   font-size: 14px;
   color: var(--main);
+}
+
+@media screen and (max-width: 768px) {
+  .chats-container {
+    grid-template-columns: 1fr;
+  }
+
+  .chat-box-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: inherit;
+    z-index: 100;
+  }
+
+  .empty-chat-box {
+    display: none;
+  }
+
+  .profile-container {
+    grid-template-columns: 1fr;
+  }
+  .profile-left-container {
+    height: fit-content;
+  }
+  .profile-options-list {
+    flex-direction: row;
+  }
+}
+@media screen and (max-width: 480px) {
+  .create-chat-dialog,
+  .create-group-dialog {
+    width: 100%;
+  }
 }

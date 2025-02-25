@@ -60,6 +60,12 @@ const CreateGroupChat = ({ groupOpen, setGroupOpen }) => {
     return !err.name && !err.members;
   };
 
+    useEffect(()=>{
+      if(groupOpen === false){
+        setSearch('')
+      }
+    }, [groupOpen])
+
   useEffect(() => {
     const timeout = setTimeout(searchUsers, 1000);
     return () => clearTimeout(timeout);

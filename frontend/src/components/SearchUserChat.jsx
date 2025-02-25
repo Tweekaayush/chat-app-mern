@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { IoIosSearch, IoIosCloseCircleOutline } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllUsers } from "../slices/chatSlice";
+import { createChat, getAllUsers } from "../slices/chatSlice";
 import { IoClose } from "react-icons/io5";
 
 const SearchUserChat = ({chatOpen, setChatOpen}) => {
@@ -27,6 +27,12 @@ const SearchUserChat = ({chatOpen, setChatOpen}) => {
     const timeout = setTimeout(searchUsers, 1000);
     return () => clearTimeout(timeout);
   }, [searchUsers]);
+
+  useEffect(()=>{
+    if(chatOpen === false){
+      setSearch('')
+    }
+  }, [chatOpen])
 
   useEffect(() => {
     window.addEventListener("click", handleClickOutside, true);
@@ -62,7 +68,7 @@ const SearchUserChat = ({chatOpen, setChatOpen}) => {
                   <img src={user?.profile_img?.url} alt={user?.name} />
                 </div>
                 <h1>{user?.name}</h1>
-                <button>Add</button>
+                <button onClick={()=>[dispatch(createChat({userId: user._id})), setChatOpen(false)]}>Add</button>
               </li>
             );
           })}
