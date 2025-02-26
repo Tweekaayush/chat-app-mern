@@ -9,9 +9,8 @@ const user = require("./routes/userRoutes");
 const chat = require("./routes/chatRoutes");
 const message = require("./routes/messageRoutes");
 const { errorHandler, notFound } = require("./middlewares/errorHandler");
-const { app, server } = require("./config/socket");
 const cloudinary = require('cloudinary')
-// const app = express()
+const app = express()
 
 //connect database
 
@@ -49,6 +48,57 @@ app.use("/api/v1/messages", message);
 app.use(notFound);
 app.use(errorHandler);
 
-server.listen(process.env.PORT, (req, res) => {
+const server = app.listen(process.env.PORT, (req, res) => {
   console.log("Server up and running");
 });
+
+const io = require('socket.io')(server, {
+  pingTimeout: 60000,
+  cors: {
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  },
+});
+
+const onlineUser = new Set();
+
+io.on("connection", (socket) => {
+  console.log("connected to socketio");
+
+  socket.on("setup", (user) => {
+    socket.join(user?._id);
+
+    onlineUser.add(user?._id);
+    socket.emit("connected");
+  });
+
+  socket.on("join chat", (room) => {
+    socket.join(room);
+  });
+
+  socket.on("typing", (room) => {
+    socket.in(room).emit("typing");
+  });
+  socket.on("stop typing", (room) => {
+    socket.in(room).emit("stop typing");
+  });
+
+  socket.on("new message", (newMessageReceived) => {
+    let chat = newMessageReceived.chat;
+
+    if (!chat.users) return console.log("chat.users not defined");
+  
+    chat.users.forEach((user) => {
+      if (user._id === newMessageReceived.sender._id) return;
+      socket.in(user._id).emit("message received", newMessageReceived);
+    });
+  });
+
+  socket.off("setup", (user) => {
+    onlineUser.delete(user?._id);
+    socket.leave(user?._id);
+  });
+
+  socket.emit("online user", Array.from(onlineUser));
+});
+
