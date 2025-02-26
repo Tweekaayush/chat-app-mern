@@ -9,8 +9,8 @@ const user = require("./routes/userRoutes");
 const chat = require("./routes/chatRoutes");
 const message = require("./routes/messageRoutes");
 const { errorHandler, notFound } = require("./middlewares/errorHandler");
-const cloudinary = require('cloudinary')
-const app = express()
+const cloudinary = require("cloudinary");
+const app = express();
 // const path = require('path')
 
 //connect database
@@ -22,8 +22,8 @@ connectDB();
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
-})
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 //middlewares
 
@@ -44,10 +44,9 @@ app.use("/api/v1/users", user);
 app.use("/api/v1/chats", chat);
 app.use("/api/v1/messages", message);
 
-
-app.get('/', (req, res)=>{
-  res.send('Server is up and running!')
-})
+app.get("/", (req, res) => {
+  res.send("Server is up and running!");
+});
 
 // const __dirname1 = path.resolve()
 // if(process.env.NODE_ENV==='production'){
@@ -71,10 +70,11 @@ const server = app.listen(process.env.PORT, (req, res) => {
   console.log("Server up and running");
 });
 
-const io = require('socket.io')(server, {
-  pingTimeout: 60000,
+const io = require("socket.io")(server, {
   cors: {
     origin: process.env.CLIENT_URL,
+    methods: ["GET", "PUT", "POST", "DELETE", "OPTIONS"],
+    credentials: true,
   },
 });
 
@@ -105,7 +105,7 @@ io.on("connection", (socket) => {
     let chat = newMessageReceived.chat;
 
     if (!chat.users) return console.log("chat.users not defined");
-  
+
     chat.users.forEach((user) => {
       if (user._id === newMessageReceived.sender._id) return;
       socket.in(user._id).emit("message received", newMessageReceived);
@@ -119,4 +119,3 @@ io.on("connection", (socket) => {
 
   socket.emit("online user", Array.from(onlineUser));
 });
-
