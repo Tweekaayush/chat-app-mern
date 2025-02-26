@@ -6,6 +6,7 @@ import {
   getSenderId,
   getSenderImage,
   getSenderStatus,
+  getTimestamp,
 } from "../utils/utils";
 import { IoIosSend } from "react-icons/io";
 import {
@@ -18,7 +19,7 @@ import {
 } from "../slices/chatSlice";
 import ChatDetails from "./ChatDetails";
 
-const ChatBox = ({setOpenAddParticipants}) => {
+const ChatBox = ({ setOpenAddParticipants }) => {
   let timeout;
   const ref = useRef(null);
   const [selectedChatCompare, setSelectedChatCompare] = useState(null);
@@ -53,7 +54,6 @@ const ChatBox = ({setOpenAddParticipants}) => {
       let timeDiff = timeNow - lastTypingTime;
       if (timeDiff >= 3000) {
         socketConnection.emit("stop typing", activeChat._id);
-        // setIsTyping(false)
       }
     }, 3000);
   };
@@ -68,7 +68,7 @@ const ChatBox = ({setOpenAddParticipants}) => {
   useEffect(() => {
     setSelectedChatCompare(activeChat);
     setActiveChatPage(0);
-    dispatch(fetchMessages(activeChat._id))
+    dispatch(fetchMessages(activeChat._id));
   }, [activeChat?._id]);
 
   useEffect(() => {
@@ -83,6 +83,7 @@ const ChatBox = ({setOpenAddParticipants}) => {
         }
       } else {
         dispatch(appendMessage(newMessageReceived));
+        dispatch(fetchChatList());
       }
     };
     socketConnection?.on("message received", receivedMessage);
@@ -98,13 +99,13 @@ const ChatBox = ({setOpenAddParticipants}) => {
   });
 
   useEffect(() => {
-    ref?.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  }, [activeChatMessages]);
+    ref?.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [activeChatMessages, isTyping]);
 
   return Object.keys(activeChat).length !== 0 ? (
     activeChatPage === 0 ? (
       <div className="chat-box-container">
-        <div className="chat-box-header" onClick={()=>setActiveChatPage(1)}>
+        <div className="chat-box-header" onClick={() => setActiveChatPage(1)}>
           <span>
             <IoMdArrowRoundBack onClick={handleBack} />
           </span>
@@ -150,12 +151,22 @@ const ChatBox = ({setOpenAddParticipants}) => {
                   </div>
                   <div className="message-content">
                     <p className="message">{m?.content}</p>
-                    <p className="message-sent-time">{m?.createdAt}</p>
+                    <p className="message-sent-time">
+                      {getTimestamp(m?.createdAt)}
+                    </p>
                   </div>
                 </li>
               );
             })}
-            {isTyping && <span>...typing</span>}
+            {isTyping && (
+              <div class="chat-bubble">
+                <div class="typing">
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                </div>
+              </div>
+            )}
             <li ref={ref}></li>
           </ul>
         </div>
@@ -176,7 +187,10 @@ const ChatBox = ({setOpenAddParticipants}) => {
         </form>
       </div>
     ) : (
-      <ChatDetails setActiveChatPage={setActiveChatPage} setOpenAddParticipants={setOpenAddParticipants} />
+      <ChatDetails
+        setActiveChatPage={setActiveChatPage}
+        setOpenAddParticipants={setOpenAddParticipants}
+      />
     )
   ) : (
     <div className="empty-chat-box">

@@ -46,18 +46,9 @@ const Chats = ({ setChatOpen, setGroupOpen, setOpenAddParticipants }) => {
     };
   }, []);
 
-  const handleResize = () =>{
-    const width = window.innerWidth
-  }
-
   useEffect(() => {
     setFilteredChatList(chatList);
   }, [chatList]);
-
-  useEffect(()=>{
-    window.addEventListener('resize', handleResize, true)
-    return ()=>window.removeEventListener('resize', handleResize, true)
-  }, [])
 
   return (
     <div className="container">

@@ -1,19 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
-import { getSender, getSenderImage, getSenderStatus } from "../utils/utils";
+import {
+  commonGroups,
+  getSender,
+  getSenderImage,
+  getSenderStatus,
+} from "../utils/utils";
 import { IoTrash } from "react-icons/io5";
-import { removeFromGroup } from "../slices/chatSlice";
+import { removeFromGroup, renameGroup, setActiveChat } from "../slices/chatSlice";
+import { MdOutlineModeEditOutline } from "react-icons/md";
 
 const ChatDetails = ({ setActiveChatPage, setOpenAddParticipants }) => {
   const {
     data: { _id },
   } = useSelector((state) => state.user);
   const {
-    data: { activeChat },
+    data: { activeChat,chatList },
   } = useSelector((state) => state.chats);
+  const [groupName, setGroupName] = useState("");
+  const [open, setOpen] = useState(false);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (activeChat?.isGroupChat) {
+      setGroupName(activeChat?.chatName);
+    }
+  }, [activeChat?._id]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(renameGroup({ name: groupName, groupId: activeChat?._id }));
+    setOpen(false);
+  };
 
   return (
     <div className="chat-details">
@@ -36,10 +56,30 @@ const ChatDetails = ({ setActiveChatPage, setOpenAddParticipants }) => {
           />
         </div>
         <h1>
-          {activeChat?.isGroupChat
-            ? activeChat?.chatName
-            : getSender(_id, activeChat?.users)}
+          {activeChat?.isGroupChat ? (
+            <>
+              {activeChat?.chatName}
+              <MdOutlineModeEditOutline onClick={() => setOpen(!open)} />
+            </>
+          ) : (
+            getSender(_id, activeChat?.users)
+          )}
         </h1>
+        {activeChat?.isGroupChat && (
+          <form
+            style={{ display: open ? "flex" : "none" }}
+            onSubmit={handleSubmit}
+          >
+            <input
+              type="text"
+              value={groupName}
+              name="chatname"
+              onChange={(e) => setGroupName(e.target.value)}
+              className="group-name-input"
+            />
+            <button type="submit">save</button>
+          </form>
+        )}
         <p>
           {activeChat?.isGroupChat
             ? ""
@@ -58,18 +98,19 @@ const ChatDetails = ({ setActiveChatPage, setOpenAddParticipants }) => {
                   </div>
                   <h2>{member.name}</h2>
                   {activeChat?.groupAdmin._id === member._id && <h4>Admin</h4>}
-                  {activeChat?.groupAdmin._id === _id && activeChat?.groupAdmin._id !== member?._id && (
-                    <IoTrash
-                      onClick={() =>
-                        dispatch(
-                          removeFromGroup({
-                            userId: member._id,
-                            groupId: activeChat?._id,
-                          })
-                        )
-                      }
-                    />
-                  )}
+                  {activeChat?.groupAdmin._id === _id &&
+                    activeChat?.groupAdmin._id !== member?._id && (
+                      <IoTrash
+                        onClick={() =>
+                          dispatch(
+                            removeFromGroup({
+                              userId: member._id,
+                              groupId: activeChat?._id,
+                            })
+                          )
+                        }
+                      />
+                    )}
                 </li>
               );
             })}
@@ -78,12 +119,29 @@ const ChatDetails = ({ setActiveChatPage, setOpenAddParticipants }) => {
       ) : (
         <div className="chat-group-info">
           <h1>Common group(s)</h1>
+          <ul className="common-group-list">
+            {commonGroups(chatList, activeChat?.users).map((group) => {
+              return (
+                <li onClick={()=>dispatch(setActiveChat(group))}>
+                  <div className="profile-img">
+                    <img src="" alt={group.chatName} />
+                  </div>
+                  <h2>{group.chatName}</h2>
+                </li>
+              );
+            })}
+          </ul>
         </div>
       )}
       <div className="chat-details-buttons">
         {activeChat?.isGroupChat ? (
           <>
-            <button className="button-success" onClick={()=>setOpenAddParticipants(true)}>Add Participants</button>
+            <button
+              className="button-success"
+              onClick={() => setOpenAddParticipants(true)}
+            >
+              Add Participants
+            </button>
             <button
               onClick={() =>
                 dispatch(
@@ -96,7 +154,7 @@ const ChatDetails = ({ setActiveChatPage, setOpenAddParticipants }) => {
             </button>
           </>
         ) : (
-          <button>Block</button>
+          <button className="button-danger">Block</button>
         )}
       </div>
     </div>

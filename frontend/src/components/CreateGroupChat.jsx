@@ -83,7 +83,7 @@ const CreateGroupChat = ({ groupOpen, setGroupOpen }) => {
     >
       <div className="create-group-dialog" ref={ref}>
         <IoClose className="close-button" />
-        <h1>Create Group Chat</h1>
+        <h1 className="heading-1">Create Group Chat</h1>
         <form onSubmit={handleSubmit}>
           <label htmlFor="" className="form-label">
             <h6>Group Name</h6>

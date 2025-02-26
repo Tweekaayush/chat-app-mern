@@ -127,9 +127,10 @@ const Profile = () => {
           ) : (
             <>
               <h1>Themes</h1>
-              <div className="theme-container">
-
-              </div>
+              <ul className="theme-container">
+                <li className="theme">Light</li>
+                <li className="theme">Dark</li>
+              </ul>
             </>
           )}
         </div>
@@ -139,3 +140,4 @@ const Profile = () => {
 };
 
 export default Profile;
+

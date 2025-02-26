@@ -17,7 +17,20 @@
   --text-color-3: #adadad;
   --danger: rgb(219, 65, 65);
   --success: rgb(68, 150, 68);
-  --shadow: rgba(17, 17, 17, 0.267);
+  --shadow: rgba(17, 17, 17, 1);
+  --white: hsl(0, 0%, 100%);
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--main);
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--white);
 }
 
 body {
@@ -121,7 +134,6 @@ nav {
   align-items: center;
   z-index: 998;
   background-color: var(--bg-color-1);
-  border-bottom: 1px solid var(--shadow);
 }
 
 .nav-brand {
@@ -148,13 +160,13 @@ nav {
 }
 
 .notification-icon > svg {
-  width: 24px;
-  height: 24px;
-  color: var(--text-color-1);
+  width: 20px;
+  height: 20px;
+  color: var(--white);
 }
 
-.notification-icon-active > svg {
-  color: var(--main);
+.notification-icon-active {
+  color: var(--main) !important;
 }
 
 .notifications-list {
@@ -168,6 +180,7 @@ nav {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  z-index: 990;
 }
 
 .notifications-list > h6 {
@@ -199,8 +212,8 @@ nav {
 }
 
 .nav-dial-head {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   overflow: hidden;
 }
@@ -248,7 +261,7 @@ nav {
 
 .create-chat-dialog,
 .create-group-dialog {
-  background-color: var(--bg-color-2);
+  background-color: var(--bg-color-1);
   display: flex;
   flex-direction: column;
   width: 450px;
@@ -267,9 +280,7 @@ nav {
 
 .create-chat-dialog > h1,
 .create-group-dialog > h1 {
-  color: var(--text-color-1);
   text-align: center;
-  padding-inline: 16px;
 }
 
 .create-chat-dialog > div {
@@ -277,7 +288,15 @@ nav {
 }
 
 .search-user-input {
-  background-color: var(--bg-color-1) !important;
+  background-color: var(--bg-color-2) !important;
+}
+
+.create-group-dialog > form > label > div {
+  background-color: var(--bg-color-2);
+}
+
+.create-group-dialog > form > label > div > input::placeholder {
+  color: var(--text-color-2);
 }
 
 .user-list {
@@ -366,6 +385,7 @@ nav {
   padding: 16px;
   height: fit-content;
   margin: 16px;
+  border-radius: 4px;
 }
 
 #login {
@@ -405,13 +425,6 @@ nav {
   border: none;
   color: var(--text-color-1);
   outline: none;
-}
-
-#login > button {
-  font-size: 16px;
-  color: var(--text-color-1);
-  padding: 12px 32px;
-  background-color: var(--main);
 }
 
 .form-link {
@@ -493,7 +506,8 @@ nav {
 }
 
 .chat-list-item {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 9fr 2fr;
   align-items: center;
   cursor: pointer;
   padding: 16px;
@@ -504,6 +518,17 @@ nav {
 
 .chat-list-item:hover {
   background-color: var(--bg-color-2);
+}
+
+.chat-list-item-info {
+  width: 100%;
+}
+
+.chat-list-item > .message-sent-time {
+  align-self: flex-start;
+  margin: 0;
+  width: fit-content;
+  word-break: keep-all;
 }
 
 .chat-list-item-info > h3 {
@@ -554,13 +579,15 @@ nav {
   flex-direction: column;
   width: 100%;
   height: inherit;
-  background-color: var(--bg-color-1);
+  background-color: var(--bg-color-2);
+  background-image: url("https://www.transparenttextures.com/patterns/inspiration-geometry.png");
 }
 
 .chat-box-header {
   display: flex;
   padding: 16px;
   align-items: center;
+  background-color: var(--bg-color-1);
 }
 
 .chat-box-header > div {
@@ -596,7 +623,7 @@ nav {
 }
 
 .chat-box-header-info > p {
-  font-size: 16px;
+  font-size: 14px;
   color: var(--text-color-2);
 }
 
@@ -604,7 +631,6 @@ nav {
   display: flex;
   height: 100%;
   overflow-y: auto;
-  background-color: var(--bg-color-2);
 }
 
 .message-list {
@@ -617,9 +643,13 @@ nav {
 
 .message-list > li {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 8px;
   width: 100%;
+  margin-bottom: 16px;
+}
+
+.message-list > li > .profile-img {
   margin-bottom: 16px;
 }
 
@@ -631,7 +661,7 @@ nav {
 .message {
   background-color: var(--bg-color-3);
   color: var(--text-color-1);
-  padding: 12px;
+  padding: 12px 16px;
   border-radius: 8px 8px 8px 0;
   font-size: 14px;
   word-wrap: break-word;
@@ -639,8 +669,8 @@ nav {
 }
 
 .message-sent-time {
-  color: var(--text-color-2);
-  font-size: 12px;
+  color: var(--text-color-3);
+  font-size: 10px;
   text-align: start;
   margin-top: 4px;
 }
@@ -662,7 +692,6 @@ nav {
   display: flex;
   padding: 16px;
   gap: 16px;
-  background-color: var(--bg-color-2);
 }
 
 .chat-input > label {
@@ -696,13 +725,15 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: url("https://www.transparenttextures.com/patterns/inspiration-geometry.png");
   background-color: var(--bg-color-2);
 }
 
 .empty-chat-box > p {
-  font-size: 16px;
-  color: var(--text-color-2);
+  font-size: 20px;
+  color: var(--text-color-1);
   text-align: center;
+  letter-spacing: 1px;
 }
 
 /*----------------------- Chat Details ----------------------- */
@@ -711,6 +742,7 @@ nav {
   display: flex;
   flex-direction: column;
   height: inherit;
+  background-color: var(--bg-color-2);
 }
 
 .chat-details > span {
@@ -741,14 +773,45 @@ nav {
 }
 
 .chat-details-head > h1 {
+  display: flex;
+  align-items: center;
+  gap: 16px;
   color: var(--text-color-1);
   font-size: 24px;
   margin-bottom: 10px;
 }
 
+.chat-details-head > h1 > svg {
+  cursor: pointer;
+}
+
 .chat-details-head > p {
   font-size: 14px;
   color: var(--text-color-2);
+}
+
+.chat-details-head > form > button {
+  background-color: var(--main);
+  color: var(--text-color-1);
+  text-transform: capitalize;
+  padding: 8px 16px;
+}
+
+.chat-details-head > form {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.group-name-input {
+  background-color: var(--bg-color-1);
+  border: none;
+  outline: none;
+  color: var(--text-color-1);
+  min-width: 200px;
+  max-width: 400px;
+  font-size: 18px;
+  padding: 10px 20px;
 }
 
 .chat-group-info {
@@ -780,8 +843,9 @@ nav {
 }
 
 .button-success {
-  background-color: var(--success);
-  color: var(--text-color-1);
+  background-color: transparent;
+  color: var(--main);
+  border: 1px solid var(--main);
   padding: 10px 16px;
   border-radius: 4px;
   font-size: 18px;
@@ -799,9 +863,10 @@ nav {
   margin-right: 16px;
 }
 
-.group-member > h2 {
+.group-member > h2,
+.common-group-list > li > h2 {
   font-size: 16px;
-  color: var(--text-color-2);
+  color: var(--text-color-1);
   margin-right: 16px;
 }
 
@@ -820,11 +885,26 @@ nav {
   height: 18px;
 }
 
+.common-group-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.common-group-list > li {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  gap: 16px;
+  border-bottom: 1px solid var(--bg-color-3);
+  cursor: pointer;
+}
+
 /*----------------------- profile ----------------------- */
 
 .profile-container {
   display: grid;
   grid-template-columns: 3fr 9fr;
+  grid-template-rows: auto;
   width: 100%;
   height: inherit;
 }
@@ -883,9 +963,9 @@ nav {
 }
 
 .profile-options-container {
-  height: 100%;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .profile-options-container > h1 {
@@ -912,8 +992,26 @@ nav {
 }
 
 .theme-container {
+  display: flex;
+  flex-wrap: wrap;
   height: 100%;
   background-color: var(--bg-color-2);
+  padding: 16px;
+  gap: 16px;
+}
+
+.theme {
+  background-color: var(--bg-color-1);
+  padding: 16px 32px;
+  height: fit-content;
+  text-transform: capitalize;
+  color: var(--text-color-1);
+  border-radius: 4px;
+  border: 1px solid var(--bg-color-1);
+}
+
+.active-theme {
+  border: 1px solid var(--white);
 }
 
 /*----------------------- Footer  ----------------------- */
@@ -936,12 +1034,72 @@ footer > p > a {
   color: var(--main);
 }
 
+/* animation */
+
+.chat-bubble {
+  background-color: var(--bg-color-3);
+  width: fit-content;
+  padding: 12px 16px;
+  -webkit-border-radius: 20px;
+  -webkit-border-bottom-left-radius: 2px;
+  -moz-border-radius: 20px;
+  -moz-border-radius-bottomleft: 2px;
+  border-radius: 8px 8px 8px 0;
+  border-bottom-left-radius: 2px;
+  display: inline-block;
+  margin-left: 30px;
+}
+.typing {
+  align-items: center;
+  display: flex;
+  height: 17px;
+}
+.typing .dot {
+  animation: mercuryTypingAnimation 1.8s infinite ease-in-out;
+  background-color: var(--bg-color-1);
+  border-radius: 50%;
+  height: 7px;
+  margin-right: 4px;
+  vertical-align: middle;
+  width: 7px;
+  display: inline-block;
+}
+.typing .dot:nth-child(1) {
+  animation-delay: 200ms;
+}
+.typing .dot:nth-child(2) {
+  animation-delay: 300ms;
+}
+.typing .dot:nth-child(3) {
+  animation-delay: 400ms;
+}
+.typing .dot:last-child {
+  margin-right: 0;
+}
+
+@keyframes mercuryTypingAnimation {
+  0% {
+    transform: translateY(0px);
+  }
+  28% {
+    transform: translateY(-7px);
+  }
+  44% {
+    transform: translateY(0px);
+  }
+}
+
 @media screen and (max-width: 768px) {
+  .nav-brand {
+    font-size: 24px;
+  }
+
   .chats-container {
     grid-template-columns: 1fr;
   }
 
-  .chat-box-container {
+  .chat-box-container,
+  .chat-details {
     position: absolute;
     top: 0;
     left: 0;
@@ -955,18 +1113,39 @@ footer > p > a {
   }
 
   .profile-container {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
   }
+
   .profile-left-container {
     height: fit-content;
   }
+
   .profile-options-list {
     flex-direction: row;
   }
 }
+
 @media screen and (max-width: 480px) {
+  .heading-1 {
+    font-size: 18px;
+  }
+
   .create-chat-dialog,
   .create-group-dialog {
     width: 100%;
   }
+
+  .form-container {
+    width: 100%;
+    /* margin: 0; */
+  }
+  footer > p {
+    font-size: 12px;
+  }
+  
+  footer > p > a {
+    font-size: 12px;
+  }
+  
 }

@@ -37,7 +37,7 @@ const AddToGroup = ({openAddParticipants, setOpenAddParticipants}) => {
     <div className="create-chat-overlay" style={{display: openAddParticipants?'':'none'}}>
       <div className="create-chat-dialog" ref={ref}>
         <IoClose className="close-button" onClick={()=>setOpenAddParticipants(false)}/>
-        <h1>Add Participants</h1>
+        <h1 className="heading-1">Add Participants</h1>
         <div>
           <label className="search-user-input">
             <IoIosSearch />

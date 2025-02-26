@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { logout } from "../../slices/userSlice";
 import { IoIosLogOut, IoMdPerson } from "react-icons/io";
 import { getSender } from "../../utils/utils";
-import { FaBell } from "react-icons/fa";
+import { FaBell, FaRegBell } from "react-icons/fa";
 import { setActiveChat, updateNotifications } from "../../slices/chatSlice";
 
 const Navbar = () => {
@@ -51,7 +51,7 @@ const Navbar = () => {
         <div className="nav-items">
           <div className="nav-notifications" ref={ref}>
             <div className="notification-icon" onClick={()=>setOpen(!open)}>
-              <FaBell />
+              {notifications.length === 0 ? <FaRegBell />:<FaBell className="notification-icon-active"/>}
             </div>
             <ul className="notifications-list" style={{display: open?'flex':'none'}}>
               <h6>Notifications</h6>

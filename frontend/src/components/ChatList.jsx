@@ -1,5 +1,5 @@
 import React from "react";
-import { getSender, getSenderImage } from "../utils/utils";
+import { getSender, getSenderImage, getTimestamp } from "../utils/utils";
 import { useDispatch } from "react-redux";
 import { setActiveChat } from "../slices/chatSlice";
 
@@ -32,6 +32,7 @@ const ChatList = ({ chatList, loggedInUser }) => {
               </h3>
               <p className="latest-message">{chat?.latestMessage?.content}</p>
             </div>
+            <p className="message-sent-time">{getTimestamp(chat?.latestMessage?.createdAt)}</p>
           </li>
         );
       })}

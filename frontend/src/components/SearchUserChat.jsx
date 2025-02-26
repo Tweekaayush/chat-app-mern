@@ -43,7 +43,7 @@ const SearchUserChat = ({chatOpen, setChatOpen}) => {
     <div className="create-chat-overlay" style={{display: chatOpen?'':'none'}}>
       <div className="create-chat-dialog" ref={ref}>
         <IoClose className="close-button" onClick={()=>setChatOpen(false)}/>
-        <h1>Find a fellow chatter!</h1>
+        <h1 className="heading-1">Find a fellow chatter!</h1>
         <div>
           <label className="search-user-input">
             <IoIosSearch />
