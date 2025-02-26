@@ -74,8 +74,9 @@ const server = app.listen(process.env.PORT, (req, res) => {
 const io = require('socket.io')(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "*",
+    origin: process.env.CLIENT_URL,
     credentials: true,
+    methods: ["GET", 'POST']
   },
 });
 
