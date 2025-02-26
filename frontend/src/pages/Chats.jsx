@@ -29,7 +29,7 @@ const Chats = ({ setChatOpen, setGroupOpen, setOpenAddParticipants }) => {
   useEffect(() => {
     dispatch(fetchChatList());
 
-    const socket = io(BASE_URL, { transports: ['websocket', 'polling'] });
+    const socket = io(BASE_URL, { transports: ['polling'] });
 
     socket.emit("setup", user);
 
