@@ -244,7 +244,7 @@ nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--bg-color-1);
+  background-color: var(--bg-color-2);
   border-radius: 50%;
 }
 

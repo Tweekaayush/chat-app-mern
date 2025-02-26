@@ -10,7 +10,7 @@ exports.generateToken = async (statusCode, user, res) => {
   const options = {
     httpOnly: true,
     secure: true,
-    sameSite: process.env.NODE_ENV === "production" ? "strict" : "none",
+    sameSite: "none",
     expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
   };
 

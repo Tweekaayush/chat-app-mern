@@ -10,8 +10,8 @@ const chat = require("./routes/chatRoutes");
 const message = require("./routes/messageRoutes");
 const { errorHandler, notFound } = require("./middlewares/errorHandler");
 const cloudinary = require('cloudinary')
-const path = require('path')
 const app = express()
+// const path = require('path')
 
 //connect database
 
@@ -46,7 +46,7 @@ app.use("/api/v1/messages", message);
 
 
 app.get('/', (req, res)=>{
-  app.send('Server is up and running!')
+  res.send('Server is up and running!')
 })
 
 // const __dirname1 = path.resolve()

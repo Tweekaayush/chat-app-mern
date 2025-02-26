@@ -11,6 +11,7 @@ import { IoAdd } from "react-icons/io5";
 import { IoIosPeople } from "react-icons/io";
 import ChatBox from "../components/ChatBox";
 import io from "socket.io-client";
+import BASE_URL from "../constants/constants";
 
 const Chats = ({ setChatOpen, setGroupOpen, setOpenAddParticipants }) => {
   const {
@@ -28,7 +29,7 @@ const Chats = ({ setChatOpen, setGroupOpen, setOpenAddParticipants }) => {
   useEffect(() => {
     dispatch(fetchChatList());
 
-    const socket = io(process.env.REACT_APP_SERVER_URL);
+    const socket = io(BASE_URL);
 
     socket.emit("setup", user);
 
