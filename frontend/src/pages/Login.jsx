@@ -29,6 +29,10 @@ const Login = () => {
     }
   }, [_id])
 
+  useEffect(()=>{
+    document.title = 'Chit Chat - Login'
+  }, [])
+
   return (
     <div className="container">
       <div className="form-container">

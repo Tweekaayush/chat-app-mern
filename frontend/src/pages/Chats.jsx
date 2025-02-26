@@ -40,6 +40,8 @@ const Chats = ({ setChatOpen, setGroupOpen, setOpenAddParticipants }) => {
       dispatch(setOnlineUsers(data));
     });
 
+    document.title = 'Chit Chat'
+
     return () => {
       socket.disconnect();
     };

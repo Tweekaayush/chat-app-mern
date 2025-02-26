@@ -57,6 +57,10 @@ const Profile = () => {
     });
   }, [_id]);
 
+    useEffect(()=>{
+      document.title = 'Chit Chat - Profile'
+    }, [])
+
   return (
     <div className="container">
       <div className="profile-container">
