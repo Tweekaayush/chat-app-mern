@@ -20,10 +20,10 @@ exports.accessChat = asyncHandler(async (req, res) => {
     .populate("users", "-password")
     .populate("latestMessage");
 
-  //   chat = await User.populate(chat, {
-  //     path: 'latestMessage.sender',
-  //     select: 'name email profile_img'
-  //   })
+  chat = await User.populate(chat, {
+    path: "latestMessage.sender",
+    select: "name email profile_img",
+  });
 
   if (chat) {
     res.status(200).json({
@@ -55,7 +55,7 @@ exports.fetchChats = asyncHandler(async (req, res) => {
   })
     .populate("users", "-password")
     .populate("groupAdmin", "-password")
-    .populate('latestMessage')
+    .populate("latestMessage")
     .sort({ updatedAt: -1 });
 
   res.status(200).json({
@@ -132,7 +132,7 @@ exports.addToGroup = asyncHandler(async (req, res) => {
 
 exports.removeFromGroup = asyncHandler(async (req, res) => {
   const { userId, groupId } = req.body;
-  console.log(userId, groupId)
+  console.log(userId, groupId);
   const groupChat = await Chat.findByIdAndUpdate(
     groupId,
     {
