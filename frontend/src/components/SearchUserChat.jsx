@@ -49,8 +49,7 @@ const SearchUserChat = ({chatOpen, setChatOpen}) => {
             <IoIosSearch />
             <input
               type="text"
-              name=""
-              id=""
+              name="search"
               value={search}
               placeholder="find chatters..."
               onChange={(e) => setSearch(e.target.value)}

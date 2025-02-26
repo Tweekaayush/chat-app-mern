@@ -6,9 +6,12 @@ import {
   getSender,
   getSenderImage,
   getSenderStatus,
+  isChatBlocked,
+  isUserBlocked,
+  receiver,
 } from "../utils/utils";
 import { IoTrash } from "react-icons/io5";
-import { removeFromGroup, renameGroup, setActiveChat } from "../slices/chatSlice";
+import { removeFromGroup, renameGroup, setActiveChat, toggleBlock } from "../slices/chatSlice";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 
 const ChatDetails = ({ setActiveChatPage, setOpenAddParticipants }) => {
@@ -45,7 +48,7 @@ const ChatDetails = ({ setActiveChatPage, setOpenAddParticipants }) => {
           <img
             src={
               activeChat?.isGroupChat
-                ? activeChat?.chatName
+                ? activeChat?.group_img?.url
                 : getSenderImage(_id, activeChat?.users)
             }
             alt={
@@ -92,7 +95,7 @@ const ChatDetails = ({ setActiveChatPage, setOpenAddParticipants }) => {
           <ul className="member-list">
             {activeChat?.users.map((member) => {
               return (
-                <li className="group-member">
+                <li key={member._id} className="group-member">
                   <div className="profile-img">
                     <img src={member.profile_img.url} alt={member.name} />
                   </div>
@@ -122,9 +125,9 @@ const ChatDetails = ({ setActiveChatPage, setOpenAddParticipants }) => {
           <ul className="common-group-list">
             {commonGroups(chatList, activeChat?.users).map((group) => {
               return (
-                <li onClick={()=>dispatch(setActiveChat(group))}>
+                <li key={group._id} onClick={()=>dispatch(setActiveChat(group))}>
                   <div className="profile-img">
-                    <img src="" alt={group.chatName} />
+                    <img src={group?.group_img?.url} alt={group.chatName} />
                   </div>
                   <h2>{group.chatName}</h2>
                 </li>
@@ -154,7 +157,7 @@ const ChatDetails = ({ setActiveChatPage, setOpenAddParticipants }) => {
             </button>
           </>
         ) : (
-          <button className="button-danger">Block</button>
+          <button className="button-danger" disabled={isChatBlocked(activeChat?.users, _id)} onClick={()=>dispatch(toggleBlock({userId: receiver(activeChat?.users, _id), groupId: activeChat._id}))}>{isUserBlocked(activeChat.users, _id)?'Unblock':isChatBlocked(activeChat.users, _id)?"You've Blocked":'Block'}</button>
         )}
       </div>
     </div>

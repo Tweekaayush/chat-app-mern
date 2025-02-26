@@ -35,6 +35,9 @@ const userSchema = new mongoose.Schema(
       required: true,
       default: false,
     },
+    blockList: [
+      {type: mongoose.Schema.Types.ObjectId}
+    ]
   },
   {
     timestamps: true,

@@ -8,6 +8,7 @@ const {
   getUsers,
 } = require("../controllers/userController");
 const { protected } = require("../middlewares/authMiddleware.js");
+const { blockUserToggle } = require("../controllers/chatController.js");
 
 const router = express.Router();
 
@@ -19,5 +20,7 @@ router
   .route("/profile")
   .get(protected, getUserProfile)
   .put(protected, updateUserProfile);
+
+router.post('/block', protected, blockUserToggle)
 
 module.exports = router;

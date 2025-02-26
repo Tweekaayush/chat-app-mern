@@ -92,7 +92,6 @@ const CreateGroupChat = ({ groupOpen, setGroupOpen }) => {
               <input
                 type="text"
                 name="name"
-                id=""
                 value={formData.name}
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
@@ -108,8 +107,7 @@ const CreateGroupChat = ({ groupOpen, setGroupOpen }) => {
               <IoIosSearch />
               <input
                 type="text"
-                name=""
-                id=""
+                name="search"
                 value={search}
                 placeholder="Find Chatters..."
                 onChange={(e) => setSearch(e.target.value)}

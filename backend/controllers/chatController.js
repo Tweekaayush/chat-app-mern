@@ -72,6 +72,10 @@ exports.createGroupChat = asyncHandler(async (req, res) => {
     users: users,
     isGroupChat: true,
     groupAdmin: req.user._id,
+    group_img: {
+      id: "1",
+      url: "../assets/group-chat.png",
+    },
   });
 
   const createdGroupChat = await Chat.findById(groupChat._id)
@@ -132,7 +136,7 @@ exports.addToGroup = asyncHandler(async (req, res) => {
 
 exports.removeFromGroup = asyncHandler(async (req, res) => {
   const { userId, groupId } = req.body;
-  console.log(userId, groupId);
+  
   const groupChat = await Chat.findByIdAndUpdate(
     groupId,
     {
@@ -149,4 +153,25 @@ exports.removeFromGroup = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("Group Chat not found!");
   }
+});
+
+exports.blockUserToggle = asyncHandler(async (req, res) => {
+  const { userId, groupId } = req.body;
+  
+  let user = await User.findById(req.user._id);
+  
+  if (user.blockList.includes(userId)) {
+    user.blockList = user.blockList.filter((id) => id.toString() !== userId);
+  } else {
+    user.blockList = [...user.blockList, userId];
+  }
+
+  const updatedUser = await user.save();
+
+  const chat = await Chat.findById(groupId).populate('users', '-password')
+
+  res.status(200).json({
+    success: true,
+    chat,
+  });
 });

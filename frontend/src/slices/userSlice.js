@@ -54,6 +54,9 @@ export const signup = createAsyncThunk(
         payload,
         {
           withCredentials: true,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          }
         }
       );
 
@@ -78,8 +81,12 @@ export const logout =createAsyncThunk('logout', async(payload, {dispatch, reject
 
 export const updateProfile = createAsyncThunk('updateProfile', async(payload, {rejectWithValue})=>{
   try {
+    console.log(payload)
     const res = await axios.put(`${process.env.REACT_APP_SERVER_URL}/api/v1/users/profile`, payload, {
-        withCredentials: true
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
     })
 
     return res.data

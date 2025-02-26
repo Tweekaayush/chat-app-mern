@@ -10,11 +10,20 @@ const chat = require("./routes/chatRoutes");
 const message = require("./routes/messageRoutes");
 const { errorHandler, notFound } = require("./middlewares/errorHandler");
 const { app, server } = require("./config/socket");
+const cloudinary = require('cloudinary')
 // const app = express()
 
 //connect database
 
 connectDB();
+
+// cloudinary
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+})
 
 //middlewares
 

@@ -11,14 +11,14 @@ const ChatList = ({ chatList, loggedInUser }) => {
         return (
           <li
             className="chat-list-item"
-            key={chat._id}
+            key={chat?._id}
             onClick={() => dispatch(setActiveChat(chat))}
           >
             <div className="profile-img">
               <img
                 src={
-                  chat.isGroupChat
-                    ? chat?.profile_img?.url
+                  chat?.isGroupChat
+                    ? chat?.group_img?.url
                     : getSenderImage(loggedInUser, chat?.users)
                 }
                 alt={chat?.chatName}
@@ -28,7 +28,7 @@ const ChatList = ({ chatList, loggedInUser }) => {
               <h3>
                 {chat?.isGroupChat
                   ? chat?.chatName
-                  : getSender(loggedInUser, chat.users)}
+                  : getSender(loggedInUser, chat?.users)}
               </h3>
               <p className="latest-message">{chat?.latestMessage?.content}</p>
             </div>

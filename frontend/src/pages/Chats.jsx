@@ -38,7 +38,6 @@ const Chats = ({ setChatOpen, setGroupOpen, setOpenAddParticipants }) => {
 
     socket.on("online user", (data) => {
       dispatch(setOnlineUsers(data));
-      console.log(data);
     });
 
     return () => {

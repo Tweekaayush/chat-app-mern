@@ -1,6 +1,7 @@
 const asyncHandler = require("../middlewares/asyncHandler");
 const User = require("../models/userModel");
 const { generateToken } = require("../utils/generateToken");
+const cloudinary = require('cloudinary')
 
 exports.login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -16,7 +17,11 @@ exports.login = asyncHandler(async (req, res) => {
 });
 
 exports.signup = asyncHandler(async (req, res) => {
-  const { email, password, name, profile_img } = req.body;
+  const { email, password, name, image} = req.body;
+
+  const uploadResult = await cloudinary.uploader.upload(image, {
+    folder: "users",
+  });
 
   const user = await User.findOne({ email });
 
@@ -30,8 +35,8 @@ exports.signup = asyncHandler(async (req, res) => {
     password,
     name,
     profile_img: {
-      id: "imageId",
-      url: "image.url",
+      id: uploadResult.public_id,
+      url: uploadResult.secure_url,
     },
   });
 
@@ -68,12 +73,27 @@ exports.getUserProfile = asyncHandler(async (req, res) => {
 });
 
 exports.updateUserProfile = asyncHandler(async (req, res) => {
-  const { email, name, password, status } = req.body;
+  const { email, name, password, status, image } = req.body;
   const user = await User.findById(req.user._id);
 
   if (!user) {
     res.status(404);
     throw new Error("");
+  }
+
+  if(image){
+
+    await cloudinary.uploader.destroy(user.profile_img.id);
+
+    const uploadResult = await cloudinary.uploader.upload(image, {
+      folder: "users",
+    });
+
+    user.profile_img = {
+      id: uploadResult.public_id,
+      url: uploadResult.secure_url
+    }
+
   }
 
   if (name) user.name = name;

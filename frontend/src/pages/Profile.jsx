@@ -6,6 +6,7 @@ import { updateProfile } from "../slices/userSlice";
 
 const Profile = () => {
   const {
+    loading,
     data: { _id, name, email, profile_img, status },
   } = useSelector((state) => state.user);
   const [option, setOption] = useState(0);
@@ -14,13 +15,14 @@ const Profile = () => {
     status: "",
     email: "",
     password: "",
-    profile_img: "",
+    image: "",
   });
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(updateProfile({...formData}))
+    // setFormData({...formData})
   };
 
   const handleChange = (e) => {
@@ -32,6 +34,18 @@ const Profile = () => {
       };
     });
   };
+  
+  const handleImage = (e) =>{
+    const file = Array.from(e.target.files)[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setFormData({ ...formData, image: reader.result });
+      }
+    };
+
+    reader.readAsDataURL(file);
+  }
 
   useEffect(() => {
     setFormData({
@@ -39,7 +53,7 @@ const Profile = () => {
       status: status,
       email: email,
       password: "",
-      profile_img: "",
+      image: "",
     });
   }, [_id]);
 
@@ -121,7 +135,16 @@ const Profile = () => {
                     />
                   </div>
                 </label>
-                <button type="submit">Save Changes</button>
+                <label htmlFor="" className="form-label">
+                    <h6>Profile image</h6>
+                    <div>
+                        <input type="file" name="image" id="image" onChange={handleImage}/>
+                    </div>
+                </label>
+                {formData.image !== '' && <div className="profile-img-2">
+                    <img src={formData.image} alt={name} />
+                </div>}
+                <button type="submit" disabled={loading}>Save Changes</button>
               </form>
             </>
           ) : (

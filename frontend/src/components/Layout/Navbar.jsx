@@ -9,7 +9,7 @@ import { FaBell, FaRegBell } from "react-icons/fa";
 import { setActiveChat, updateNotifications } from "../../slices/chatSlice";
 
 const Navbar = () => {
-  const ref= useRef(null)
+  const ref = useRef(null);
   const {
     data: { _id, profile_img, name },
   } = useSelector((state) => state.user);
@@ -22,25 +22,26 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   const handleNotification = (notification) => {
+    console.log(notification)
     dispatch(
       updateNotifications(
         notifications?.filter((n) => n._id !== notification?._id)
       )
     );
-    dispatch(setActiveChat(notification.chat))
-    setOpen(false)
+    dispatch(setActiveChat(notification));
+    setOpen(false);
   };
 
-  const handleClickOutside = (e) =>{
-    if(ref.current && !ref.current.contains(e.target)){
-      setOpen(false)
+  const handleClickOutside = (e) => {
+    if (ref.current && !ref.current.contains(e.target)) {
+      setOpen(false);
     }
-  }
+  };
 
-  useEffect(()=>{
-    window.addEventListener('click', handleClickOutside, true)
-    return ()=>window.removeEventListener('click', handleClickOutside, true)
-  })
+  useEffect(() => {
+    window.addEventListener("click", handleClickOutside, true);
+    return () => window.removeEventListener("click", handleClickOutside, true);
+  });
 
   return (
     <nav>
@@ -50,21 +51,31 @@ const Navbar = () => {
       {_id && (
         <div className="nav-items">
           <div className="nav-notifications" ref={ref}>
-            <div className="notification-icon" onClick={()=>setOpen(!open)}>
-              {notifications.length === 0 ? <FaRegBell />:<FaBell className="notification-icon-active"/>}
+            <div className="notification-icon" onClick={() => setOpen(!open)}>
+              {notifications.length === 0 ? (
+                <FaRegBell />
+              ) : (
+                <FaBell className="notification-icon-active" />
+              )}
             </div>
-            <ul className="notifications-list" style={{display: open?'flex':'none'}}>
+            <ul
+              className="notifications-list"
+              style={{ display: open ? "flex" : "none" }}
+            >
               <h6>Notifications</h6>
               {notifications?.length === 0 ? (
                 <li className="empty-notification">No new messages</li>
               ) : (
                 notifications?.map((chat) => {
                   return (
-                    <li className="notification" onClick={()=>handleNotification(chat)}>
+                    <li
+                      className="notification"
+                      onClick={() => handleNotification(chat)}
+                    >
                       New Message from{" "}
-                      {chat.isGroupChat
-                        ? chat.chatname
-                        : getSender(_id, chat?.chat?.users)}
+                      {chat?.isGroupChat
+                        ? chat?.chatName
+                        : getSender(_id, chat?.users)}
                     </li>
                   );
                 })

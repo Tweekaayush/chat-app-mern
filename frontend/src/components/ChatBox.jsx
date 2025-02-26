@@ -7,6 +7,8 @@ import {
   getSenderImage,
   getSenderStatus,
   getTimestamp,
+  isChatBlocked,
+  isUserBlocked,
 } from "../utils/utils";
 import { IoIosSend } from "react-icons/io";
 import {
@@ -78,7 +80,7 @@ const ChatBox = ({ setOpenAddParticipants }) => {
         newMessageReceived.chat._id !== activeChat?._id
       ) {
         if (!notifications.includes(newMessageReceived)) {
-          dispatch(updateNotifications([...notifications, newMessageReceived]));
+          dispatch(updateNotifications([...notifications, newMessageReceived.chat]));
           dispatch(fetchChatList());
         }
       } else {
@@ -114,7 +116,7 @@ const ChatBox = ({ setOpenAddParticipants }) => {
               <img
                 src={
                   activeChat?.isGroupChat
-                    ? activeChat?.chatName
+                    ? activeChat?.group_img?.url
                     : getSenderImage(_id, activeChat?.users)
                 }
                 alt={
@@ -142,7 +144,7 @@ const ChatBox = ({ setOpenAddParticipants }) => {
           <ul className="message-list">
             {activeChatMessages.map((m) => {
               return (
-                <li className={m?.sender?._id === _id ? "owner" : ""}>
+                <li key={m._id} className={m?.sender?._id === _id ? "owner" : ""}>
                   <div className="profile-img">
                     <img
                       src={m?.sender?.profile_img?.url}
@@ -150,7 +152,14 @@ const ChatBox = ({ setOpenAddParticipants }) => {
                     />
                   </div>
                   <div className="message-content">
-                    <p className="message">{m?.content}</p>
+                    {activeChat?.isGroupChat && <h6>{m?.sender?.name}</h6>}
+                    <p
+                      className={`message ${
+                        activeChat?.isGroupChat ? "group-msg" : ""
+                      }`}
+                    >
+                      {m?.content}
+                    </p>
                     <p className="message-sent-time">
                       {getTimestamp(m?.createdAt)}
                     </p>
@@ -170,21 +179,31 @@ const ChatBox = ({ setOpenAddParticipants }) => {
             <li ref={ref}></li>
           </ul>
         </div>
-        <form onSubmit={handleSubmit} className="chat-input">
-          <label htmlFor="">
-            <input
-              type="text"
-              name="text"
-              id="text"
-              placeholder="Enter message"
-              value={message}
-              onChange={typingHandler}
-            />
-          </label>
-          <button type="submit">
-            <IoIosSend />
-          </button>
-        </form>
+        {isUserBlocked(activeChat.users, _id) ? (
+          <div className="block-msg">
+            <p>You have blocked this user.</p>
+          </div>
+        ) : isChatBlocked(activeChat.users, _id) ? (
+          <div className="block-msg">
+            <p>You cannot reply to this coversation</p>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="chat-input">
+            <label htmlFor="">
+              <input
+                type="text"
+                name="text"
+                id="text"
+                placeholder="Enter message"
+                value={message}
+                onChange={typingHandler}
+              />
+            </label>
+            <button type="submit">
+              <IoIosSend />
+            </button>
+          </form>
+        )}
       </div>
     ) : (
       <ChatDetails

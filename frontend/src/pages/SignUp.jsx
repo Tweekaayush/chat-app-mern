@@ -6,14 +6,15 @@ import { Link } from "react-router-dom";
 import { signup } from "../slices/userSlice";
 
 const SignUp = () => {
-  const { _id } = useSelector((state) => state.user.data);
+  const {loading, data: {_id} } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: '',
+    name: "",
     email: "",
     password: "",
-    confirmPassword: ''
+    confirmPassword: "",
+    image: "",
   });
 
   const handleChange = (e) => {
@@ -21,10 +22,21 @@ const SignUp = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleImage = (e) => {
+    const file = Array.from(e.target.files)[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setFormData({ ...formData, image: reader.result });
+      }
+    };
+
+    reader.readAsDataURL(file);
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-    dispatch(signup({...formData}));
+    dispatch(signup({ ...formData }));
   };
 
   useEffect(() => {
@@ -87,7 +99,20 @@ const SignUp = () => {
               />
             </div>
           </label>
-          <button type="submit" className="button-1">Sign Up</button>
+          <label htmlFor="confirmPassword" className="form-label">
+            <h6>Profile Image</h6>
+            <div>
+              <input type="file" name="image" onChange={handleImage} />
+            </div>
+          </label>
+          {formData?.image !== "" && (
+            <div className="profile-img">
+              <img src={formData?.image} alt={formData?.name} />
+            </div>
+          )}
+          <button type="submit" className="button-1" disabled={loading}>
+            Sign Up
+          </button>
           <p className="form-link">
             Already have an account? <Link to="/login">Log In</Link>
           </p>

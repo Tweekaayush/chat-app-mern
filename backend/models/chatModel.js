@@ -24,6 +24,14 @@ const chatSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    group_img: {
+      id: {
+        type: String,
+      },
+      url: {
+        type: String,
+      },
+    },
   },
   {
     timestamps: true,

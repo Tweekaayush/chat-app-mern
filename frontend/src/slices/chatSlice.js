@@ -207,6 +207,24 @@ export const createChat = createAsyncThunk(
   }
 );
 
+export const toggleBlock = createAsyncThunk(
+  "toggleBlock",
+  async (payload, { rejectWithValue, dispatch }) => {
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_SERVER_URL}/api/v1/users/block`,
+        payload,
+        {
+          withCredentials: true,
+        }
+      );
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
 const chatSlice = createSlice({
   name: "chats",
   initialState,
@@ -351,6 +369,17 @@ const chatSlice = createSlice({
       state.data.activeChat = action.payload.groupChat;
     });
     builder.addCase(renameGroup.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(toggleBlock.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(toggleBlock.fulfilled, (state, action) => {
+      state.loading = false;
+      state.data.activeChat = action.payload.chat;
+    });
+    builder.addCase(toggleBlock.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload;
     });
