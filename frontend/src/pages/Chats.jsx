@@ -29,7 +29,10 @@ const Chats = ({ setChatOpen, setGroupOpen, setOpenAddParticipants }) => {
   useEffect(() => {
     dispatch(fetchChatList());
 
-    const socket = io(BASE_URL, { transports: ['polling'] });
+    const socket = io(BASE_URL, {
+      withCredentials: true,
+      transports: ["websocket"],
+    });
 
     socket.emit("setup", user);
 
@@ -41,7 +44,7 @@ const Chats = ({ setChatOpen, setGroupOpen, setOpenAddParticipants }) => {
       dispatch(setOnlineUsers(data));
     });
 
-    document.title = 'Chit Chat'
+    document.title = "Chit Chat";
 
     return () => {
       socket.disconnect();
