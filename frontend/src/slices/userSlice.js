@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { clearChatData } from "./chatSlice";
+import BASE_URL from "../constants/constants";
 
 const initialState = {
   loading: false,
