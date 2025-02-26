@@ -14,7 +14,7 @@ export const loadUser = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_SERVER_URL}/api/v1/users/profile`,
+        `${BASE_URL}/api/v1/users/profile`,
         {
           withCredentials: true,
         }
@@ -31,7 +31,7 @@ export const login = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}/api/v1/users/login`,
+        `${BASE_URL}/api/v1/users/login`,
         payload,
         {
           withCredentials: true,
@@ -50,7 +50,7 @@ export const signup = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}/api/v1/users/signup`,
+        `${BASE_URL}/api/v1/users/signup`,
         payload,
         {
           withCredentials: true,
@@ -69,7 +69,7 @@ export const signup = createAsyncThunk(
 
 export const logout =createAsyncThunk('logout', async(payload, {dispatch, rejectWithValue})=>{
     try {
-        const res = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/v1/users/logout`, payload, {
+        const res = await axios.post(`${BASE_URL}/api/v1/users/logout`, payload, {
             withCredentials: true
         })
         dispatch(clearChatData())
@@ -82,7 +82,7 @@ export const logout =createAsyncThunk('logout', async(payload, {dispatch, reject
 export const updateProfile = createAsyncThunk('updateProfile', async(payload, {rejectWithValue})=>{
   try {
     console.log(payload)
-    const res = await axios.put(`${process.env.REACT_APP_SERVER_URL}/api/v1/users/profile`, payload, {
+    const res = await axios.put(`${BASE_URL}/api/v1/users/profile`, payload, {
         withCredentials: true,
         headers: {
           'Content-Type': 'multipart/form-data',

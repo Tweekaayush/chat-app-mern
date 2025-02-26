@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import BASE_URL from '../constants/constants'
 
 const initialState = {
   loading: false,
@@ -19,7 +20,7 @@ export const fetchChatList = createAsyncThunk(
   async (payload, { dispatch, rejectWithValue }) => {
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_SERVER_URL}/api/v1/chats`,
+        `${BASE_URL}/api/v1/chats`,
         {
           withCredentials: true,
         }
@@ -37,7 +38,7 @@ export const getAllUsers = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_SERVER_URL}/api/v1/users?search=${payload}`,
+        `${BASE_URL}/api/v1/users?search=${payload}`,
         {
           withCredentials: true,
         }
@@ -55,7 +56,7 @@ export const createGroupChat = createAsyncThunk(
   async (payload, { dispatch, rejectWithValue }) => {
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}/api/v1/chats/group`,
+        `${BASE_URL}/api/v1/chats/group`,
         payload,
         {
           withCredentials: true,
@@ -76,7 +77,7 @@ export const fetchMessages = createAsyncThunk(
   async (payload, { rejectWithValue, getState }) => {
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_SERVER_URL}/api/v1/messages/${payload}`,
+        `${BASE_URL}/api/v1/messages/${payload}`,
         {
           withCredentials: true,
         }
@@ -109,7 +110,7 @@ export const sendMessage = createAsyncThunk(
   async (payload, { rejectWithValue, dispatch, getState }) => {
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}/api/v1/messages`,
+        `${BASE_URL}/api/v1/messages`,
         payload,
         {
           withCredentials: true,
@@ -133,7 +134,7 @@ export const removeFromGroup = createAsyncThunk(
   async (payload, { dispatch, rejectWithValue, getState }) => {
     try {
       const res = await axios.put(
-        `${process.env.REACT_APP_SERVER_URL}/api/v1/chats/group/remove`,
+        `${BASE_URL}/api/v1/chats/group/remove`,
         payload,
         {
           withCredentials: true,
@@ -156,7 +157,7 @@ export const addToGroup = createAsyncThunk(
   async (payload, { dispatch, rejectWithValue }) => {
     try {
       const res = await axios.put(
-        `${process.env.REACT_APP_SERVER_URL}/api/v1/chats/group/add`,
+        `${BASE_URL}/api/v1/chats/group/add`,
         payload,
         {
           withCredentials: true,
@@ -174,7 +175,7 @@ export const renameGroup = createAsyncThunk(
   async (payload, { dispatch, rejectWithValue }) => {
     try {
       const res = await axios.put(
-        `${process.env.REACT_APP_SERVER_URL}/api/v1/chats/group`,
+        `${BASE_URL}/api/v1/chats/group`,
         payload,
         {
           withCredentials: true,
@@ -193,7 +194,7 @@ export const createChat = createAsyncThunk(
   async (payload, { rejectWithValue, dispatch }) => {
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}/api/v1/chats`,
+        `${BASE_URL}/api/v1/chats`,
         payload,
         {
           withCredentials: true,
@@ -212,7 +213,7 @@ export const toggleBlock = createAsyncThunk(
   async (payload, { rejectWithValue, dispatch }) => {
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}/api/v1/users/block`,
+        `${BASE_URL}/api/v1/users/block`,
         payload,
         {
           withCredentials: true,
