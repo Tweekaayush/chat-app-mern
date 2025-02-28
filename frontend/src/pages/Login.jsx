@@ -5,10 +5,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../slices/userSlice";
 
 const Login = () => {
-  const {_id} = useSelector(state=>state.user.data)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const { _id } = useSelector((state) => state.user.data);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [formErrors, setFormErrors] = useState({
     email: "",
     password: "",
   });
@@ -18,20 +23,41 @@ const Login = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(login(formData))
+  const validate = () => {
+    const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    const err = {
+      email: "",
+      password: "",
+    };
+
+    if (!pattern.test(formData.email)) {
+      err.email = "Please enter a valid email.";
+    }
+    if (formData.password.length === 0) {
+      err.password = "Please enter your password";
+    }
+    setFormErrors({ ...err });
+
+    return !err.email && !err.password;
   };
 
-  useEffect(()=>{
-    if(_id){
-      navigate('/')
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validate()) {
+      dispatch(login(formData));
     }
-  }, [_id])
+  };
 
-  useEffect(()=>{
-    document.title = 'Chit Chat - Login'
-  }, [])
+  useEffect(() => {
+    if (_id) {
+      navigate("/");
+    }
+  }, [_id]);
+
+  useEffect(() => {
+    document.title = "Chit Chat - Login";
+  }, []);
 
   return (
     <div className="container">
@@ -48,22 +74,43 @@ const Login = () => {
                 value={formData.email}
                 name="email"
                 onChange={handleChange}
+                placeholder="youremail@gmail.com"
               />
             </div>
+            {formErrors.email && (
+              <p className="error-msg">{formErrors.email}</p>
+            )}
           </label>
           <label htmlFor="password" className="form-label">
             <h6>Password</h6>
             <div>
               <IoIosLock />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 value={formData.password}
                 name="password"
                 onChange={handleChange}
+                placeholder="********"
               />
             </div>
+            {formErrors.password && (
+              <p className="error-msg">{formErrors.password}</p>
+            )}
           </label>
-          <button type="submit" className="button-1">Login</button>
+          <label htmlFor="showPassword" className="show-password-check">
+            <input
+              type="checkbox"
+              name="showPassword"
+              id="showPassword"
+              checked={showPassword}
+              onClick={() => setShowPassword(!showPassword)}
+            />
+            <span></span>
+            <p>Show Password</p>
+          </label>
+          <button type="submit" className="button-1">
+            Login
+          </button>
           <p className="form-link">
             Don't have an account? <Link to="/signup">Sign up</Link>
           </p>

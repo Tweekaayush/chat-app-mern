@@ -28,10 +28,15 @@ const App = () => {
   const { successMessage: userSuccessMessage, error: userError } = useSelector(
     (state) => state.user
   );
+  const {theme} = useSelector(state=>state.theme)
   const dispatch = useDispatch();
   const [chatOpen, setChatOpen] = useState(false);
   const [groupOpen, setGroupOpen] = useState(false);
   const [openAddParticipants, setOpenAddParticipants] = useState(false);
+
+  useEffect(()=>{
+    document.documentElement.setAttribute('data-theme', theme)
+  }, [theme])
 
   useEffect(() => {
     if (userError) {

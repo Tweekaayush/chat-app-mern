@@ -8,6 +8,13 @@
 
 :root {
   --main: #1d90f4;
+  --danger: rgb(219, 65, 65);
+  --success: rgb(68, 150, 68);
+  --shadow: rgba(17, 17, 17, 1);
+  --white: hsl(0, 0%, 100%);
+}
+
+[data-theme='dark'] {
   --bg-color-1: #282a37;
   --bg-color-2: #323645;
   --bg-color-3: #424657;
@@ -15,10 +22,16 @@
   --text-color-1: #ffffff;
   --text-color-2: #bdbdbd;
   --text-color-3: #adadad;
-  --danger: rgb(219, 65, 65);
-  --success: rgb(68, 150, 68);
-  --shadow: rgba(17, 17, 17, 1);
-  --white: hsl(0, 0%, 100%);
+}
+
+[data-theme='light'] {
+  --bg-color-1: #edeef0;
+  --bg-color-2: #d4dde9;
+  --bg-color-3: #88909e;
+  --bg-color-4: #b9cbe0;
+  --text-color-1: #000000;
+  --text-color-2: #424242;
+  --text-color-3: #525252;
 }
 
 ::-webkit-scrollbar {
@@ -93,7 +106,7 @@ button {
 
 .button-1 {
   background-color: var(--main);
-  color: var(--text-color-1);
+  color: var(--white);
   font-size: 14px;
   padding: 8px 16px;
   text-transform: uppercase;
@@ -162,7 +175,7 @@ nav {
 .notification-icon > svg {
   width: 20px;
   height: 20px;
-  color: var(--white);
+  color: var(--text-color-1);
 }
 
 .notification-icon-active {
@@ -244,7 +257,7 @@ nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--bg-color-2);
+  background-color: var(--bg-color-4);
   border-radius: 50%;
 }
 
@@ -334,7 +347,7 @@ nav {
 .user-list-item > button {
   font-size: 14px;
   background-color: var(--main);
-  color: var(--text-color-1);
+  color: var(--white);
   border-radius: 4px;
   padding: 4px 8px;
 }
@@ -350,7 +363,7 @@ nav {
   display: flex;
   gap: 4px;
   background-color: var(--main);
-  color: var(--text-color-1);
+  color: var(--white);
   align-items: center;
   padding: 4px 8px;
   border-radius: 2px;
@@ -443,6 +456,34 @@ nav {
   color: var(--danger);
 }
 
+.show-password-check{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.show-password-check > input[type='checkbox']{
+  display: none;
+  cursor: pointer;
+}
+
+.show-password-check > span{
+  background-color: var(--bg-color-1);
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.show-password-check > input[type='checkbox']:checked + span{
+  background-color: var(--main);
+}
+
+.show-password-check > p{
+  font-size: 14px;
+  color: var(--text-color-2);
+}
+
 /*----------------------- Chats ----------------------- */
 
 .chats-container {
@@ -462,7 +503,7 @@ nav {
 
 .filter-user-input {
   padding: 16px;
-  margin-bottom: 3px;
+
 }
 
 .filter-user-input > label,
@@ -557,7 +598,7 @@ nav {
 }
 
 .create-chats > button > svg {
-  color: var(--text-color-1);
+  color: var(--white);
   width: 24px;
   height: 24px;
 }
@@ -668,7 +709,7 @@ nav {
 
 .message {
   background-color: var(--bg-color-3);
-  color: var(--text-color-1);
+  color: var(--white);
   padding: 12px 16px;
   border-radius: 8px 8px 8px 0;
   font-size: 14px;
@@ -730,7 +771,7 @@ nav {
 }
 
 .chat-input > label > input::placeholder {
-  color: var(--text-color-2);
+  color: var(--white);
 }
 
 .chat-input > button {
@@ -740,7 +781,7 @@ nav {
 }
 
 .chat-input > button > svg {
-  color: var(--text-color-1);
+  color: var(--white);
   width: 100%;
   height: 100%;
 }
@@ -966,7 +1007,7 @@ nav {
   grid-template-areas:
     "a b c"
     "a b d";
-  grid-template-columns: 1fr 1fr 10fr;
+  grid-template-columns: 0.5fr 1fr 10.5fr;
   align-items: center;
   padding: 16px;
 }
@@ -1032,7 +1073,7 @@ nav {
 
 .profile-options-container > form > button {
   background-color: var(--main);
-  color: var(--text-color-1);
+  color: var(--white);
   padding: 10px 16px;
   align-self: flex-end;
 }
@@ -1048,16 +1089,17 @@ nav {
 
 .theme {
   background-color: var(--bg-color-1);
-  padding: 16px 32px;
+  padding: 10px 32px;
   height: fit-content;
   text-transform: capitalize;
   color: var(--text-color-1);
   border-radius: 4px;
   border: 1px solid var(--bg-color-1);
+  cursor: pointer;
 }
 
 .active-theme {
-  border: 1px solid var(--white);
+  border: 1px solid var(--text-color-1) !important;
 }
 
 /*----------------------- Footer  ----------------------- */

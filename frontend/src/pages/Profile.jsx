@@ -3,12 +3,16 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { updateProfile } from "../slices/userSlice";
+import { changeTheme } from "../slices/themeSlice";
 
 const Profile = () => {
   const {
     loading,
     data: { _id, name, email, profile_img, status },
   } = useSelector((state) => state.user);
+  const {
+    theme
+  } = useSelector(state=>state.theme)
   const [option, setOption] = useState(0);
   const [formData, setFormData] = useState({
     name: "",
@@ -155,8 +159,8 @@ const Profile = () => {
             <>
               <h1>Themes</h1>
               <ul className="theme-container">
-                <li className="theme">Light</li>
-                <li className="theme">Dark</li>
+                <li className={`theme ${theme ==='light' && 'active-theme'}`} onClick={()=>dispatch(changeTheme('light'))}>Light</li>
+                <li className={`theme ${theme ==='dark' && 'active-theme'}`} onClick={()=>dispatch(changeTheme('dark'))}>Dark</li>
               </ul>
             </>
           )}
