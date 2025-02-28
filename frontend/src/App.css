@@ -18,7 +18,7 @@
   --bg-color-1: #282a37;
   --bg-color-2: #323645;
   --bg-color-3: #424657;
-  --bg-color-4: #26272d;
+  --bg-color-4: #329cf8;
   --text-color-1: #ffffff;
   --text-color-2: #bdbdbd;
   --text-color-3: #adadad;
@@ -27,8 +27,8 @@
 [data-theme='light'] {
   --bg-color-1: #edeef0;
   --bg-color-2: #d4dde9;
-  --bg-color-3: #88909e;
-  --bg-color-4: #b9cbe0;
+  --bg-color-3: #ebeaea;
+  --bg-color-4: #329cf8;
   --text-color-1: #000000;
   --text-color-2: #424242;
   --text-color-3: #525252;
@@ -257,16 +257,16 @@ nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--bg-color-4);
+  background-color: var(--main);
   border-radius: 50%;
 }
 
 .nav-options > li:hover {
-  background-color: var(--bg-color-3);
+  background-color: var(--bg-color-4);
 }
 
 .nav-options > li > svg {
-  color: var(--text-color-1);
+  color: var(--white);
   font-size: 18px;
 }
 
@@ -709,7 +709,7 @@ nav {
 
 .message {
   background-color: var(--bg-color-3);
-  color: var(--white);
+  color: var(--text-color-1);
   padding: 12px 16px;
   border-radius: 8px 8px 8px 0;
   font-size: 14px;
@@ -736,6 +736,7 @@ nav {
 .owner .message {
   border-radius: 8px 8px 0 8px;
   background-color: var(--main);
+  color: var(--white);
 }
 
 .group-msg, .owner .group-msg{
@@ -771,7 +772,7 @@ nav {
 }
 
 .chat-input > label > input::placeholder {
-  color: var(--white);
+  color: var(--text-color-3);
 }
 
 .chat-input > button {

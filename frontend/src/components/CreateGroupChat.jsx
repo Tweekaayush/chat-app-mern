@@ -119,9 +119,16 @@ const CreateGroupChat = ({ groupOpen, setGroupOpen }) => {
           </label>
             {formData.members.length !== 0  && <ul className="create-group-member-list">
               {formData.members.map((member)=>{
-                return <li className="create-group-member">
+                return <li id={member._id} className="create-group-member">
                   <h6>{member.name}</h6>
-                  <IoIosCloseCircleOutline/>
+                  <IoIosCloseCircleOutline onClick={()=> {
+                    setFormData( prev=>{
+                      return {
+                        ...prev,
+                        members: [...prev.members.filter(m=>m._id !== member._id)]
+                      }
+                    })
+                  }}/>
                 </li>
               })}
             </ul>}
