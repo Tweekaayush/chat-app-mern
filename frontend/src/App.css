@@ -690,6 +690,10 @@ nav {
   margin-bottom: 16px;
 }
 
+.message-list > li:last-of-type{
+  margin: 0;
+}
+
 .message-list > li > .profile-img {
   margin-bottom: 16px;
 }
@@ -1227,7 +1231,7 @@ footer > p > a {
   }
 
   .container{
-    height: calc(100vh - 112px);
+    height: 100%;
   }
 
   .create-chat-dialog,
