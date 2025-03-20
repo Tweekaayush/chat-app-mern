@@ -20,6 +20,7 @@ import {
   updateNotifications,
 } from "../slices/chatSlice";
 import ChatDetails from "./ChatDetails";
+import Loader from "./Loader";
 
 const ChatBox = ({ setOpenAddParticipants }) => {
   let timeout;
@@ -80,7 +81,9 @@ const ChatBox = ({ setOpenAddParticipants }) => {
         newMessageReceived.chat._id !== activeChat?._id
       ) {
         if (!notifications.includes(newMessageReceived)) {
-          dispatch(updateNotifications([...notifications, newMessageReceived.chat]));
+          dispatch(
+            updateNotifications([...notifications, newMessageReceived.chat])
+          );
           dispatch(fetchChatList());
         }
       } else {
@@ -101,7 +104,7 @@ const ChatBox = ({ setOpenAddParticipants }) => {
   });
 
   useEffect(() => {
-    ref?.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    ref?.current?.scrollIntoView({ behavior: "smooth" });
   }, [activeChatMessages, isTyping]);
 
   return Object.keys(activeChat).length !== 0 ? (
@@ -141,43 +144,50 @@ const ChatBox = ({ setOpenAddParticipants }) => {
           </div>
         </div>
         <div className="chat-box-messages">
-          <ul className="message-list">
-            {activeChatMessages.map((m) => {
-              return (
-                <li key={m._id} className={m?.sender?._id === _id ? "owner" : ""}>
-                  <div className="profile-img">
-                    <img
-                      src={m?.sender?.profile_img?.url}
-                      alt={m?.sender?.name}
-                    />
+          {loading? (
+            <Loader />
+          ) : (
+            <ul className="message-list">
+              {activeChatMessages.map((m) => {
+                return (
+                  <li
+                    key={m._id}
+                    className={m?.sender?._id === _id ? "owner" : ""}
+                  >
+                    <div className="profile-img">
+                      <img
+                        src={m?.sender?.profile_img?.url}
+                        alt={m?.sender?.name}
+                      />
+                    </div>
+                    <div className="message-content">
+                      {activeChat?.isGroupChat && <h6>{m?.sender?.name}</h6>}
+                      <p
+                        className={`message ${
+                          activeChat?.isGroupChat ? "group-msg" : ""
+                        }`}
+                      >
+                        {m?.content}
+                      </p>
+                      <p className="message-sent-time">
+                        {getTimestamp(m?.createdAt)}
+                      </p>
+                    </div>
+                  </li>
+                );
+              })}
+              {isTyping && (
+                <div class="chat-bubble">
+                  <div class="typing">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
                   </div>
-                  <div className="message-content">
-                    {activeChat?.isGroupChat && <h6>{m?.sender?.name}</h6>}
-                    <p
-                      className={`message ${
-                        activeChat?.isGroupChat ? "group-msg" : ""
-                      }`}
-                    >
-                      {m?.content}
-                    </p>
-                    <p className="message-sent-time">
-                      {getTimestamp(m?.createdAt)}
-                    </p>
-                  </div>
-                </li>
-              );
-            })}
-            {isTyping && (
-              <div class="chat-bubble">
-                <div class="typing">
-                  <div class="dot"></div>
-                  <div class="dot"></div>
-                  <div class="dot"></div>
                 </div>
-              </div>
-            )}
-            <li ref={ref}></li>
-          </ul>
+              )}
+              <li ref={ref}></li>
+            </ul>
+          )}
         </div>
         {isUserBlocked(activeChat.users, _id) ? (
           <div className="block-msg">
