@@ -101,7 +101,7 @@ const ChatBox = ({ setOpenAddParticipants }) => {
   });
 
   useEffect(() => {
-    ref?.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    ref?.current?.scrollIntoView({ behavior: "smooth" });
   }, [activeChatMessages, isTyping]);
 
   return Object.keys(activeChat).length !== 0 ? (
